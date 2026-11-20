@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://edgarallanmusic.github.io/sitemap.xml
