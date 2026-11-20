@@ -41,6 +41,7 @@
   const SPEC_MIN_HZ = 30;
   const SPEC_MAX_HZ = 12000;
   const SPEC_BANDS = 96;
+  let waveBands = SPEC_BANDS;
   const specBands = new Float32Array(SPEC_BANDS);
   const specFloor = new Float32Array(SPEC_BANDS);
   const specPeak = new Float32Array(SPEC_BANDS);
@@ -67,7 +68,7 @@
   let W = 1920, H = 1080, dpr = 1;
   let quality = 1;
   let smokeStrip = 5;
-  let slowStreak = 0;
+  let layoutPad = 0;
   let audioCtx = null, analyser = null, sourceNode = null, gainNode = null;
   let freq = null, timeDom = null;
   let running = false, raf = 0, lastT = 0;
@@ -116,6 +117,9 @@
   let drawnFrames = 0;
   let workSum = 0;
   let workN = 0;
+  const workRing = new Float32Array(240);
+  let workRingN = 0;
+  let workRingI = 0;
   const recLayout = null;
 
   const playlist = [];
@@ -169,7 +173,7 @@
       const maxHz = Math.min(SPEC_MAX_HZ, nyquist * 0.98);
       const logMin = Math.log(SPEC_MIN_HZ);
       const logRange = Math.log(maxHz) - logMin;
-      const n = SPEC_BANDS;
+      const n = waveBands;
       for (let i = 0; i < n; i++) {
         const f0 = Math.exp(logMin + logRange * (i / n));
         const f1 = Math.exp(logMin + logRange * ((i + 1) / n));
@@ -307,7 +311,11 @@
   }
 
     function spawnParticle(emberForce) {
-      if (particles.length >= MAX_PARTICLES) particles.shift();
+      const cap = isPhone() ? 28 : MAX_PARTICLES;
+      if (particles.length >= cap) {
+        if (isPhone()) return;
+        particles.shift();
+      }
       const high = bands.sHigh;
       const ember = emberForce || Math.random() < 0.35 + high * 0.5;
       const fp = getFlamePos();
@@ -329,6 +337,14 @@
       if (mode === 5) return H * 0.72;
       if (mode === 6) return H * 0.58;
       return H * 0.66;
+    }
+
+    function isPhone() {
+      const w = window.innerWidth || W || 1920;
+      const h = window.innerHeight || H || 1080;
+      let coarse = false;
+      try { coarse = window.matchMedia("(pointer: coarse)").matches; } catch (e) {}
+      return coarse || Math.min(w, h) <= 700;
     }
 
     function coverRect(viewW, viewH, imgW, imgH, zoom, focusX, focusY) {
@@ -353,12 +369,27 @@
     function isPortrait() { return H > W; }
 
     function computeBannerRect() {
+      if (isPhone()) {
+        const topInset = 8;
+        const reserve = Math.max(96, layoutPad);
+        const viewH = Math.max(140, H - reserve - topInset);
+        const scale = Math.min(W / BANNER.w, viewH / BANNER.h);
+        const w = BANNER.w * scale;
+        const h = BANNER.h * scale;
+        let x = (W - w) / 2;
+        let y = topInset + Math.max(0, (viewH - h) / 2);
+        if (x < 188) y = Math.max(y, 42);
+        bannerRect = { x: x, y: y, w: w, h: h, scale: scale };
+        window.__eamBanner = bannerRect;
+        return bannerRect;
+      }
       const vertical = recLayout === "vertical" || isPortrait();
       bannerRect = coverRect(
         W, H, BANNER.w, BANNER.h, 1,
         vertical ? BANNER.vertFocusX : 0.5,
         vertical ? BANNER.vertFocusY : 0.5
       );
+      window.__eamBanner = bannerRect;
       return bannerRect;
     }
 
@@ -375,7 +406,7 @@
 
     function getVoidPos() {
       computeBannerRect();
-      const vertical = recLayout === "vertical" || isPortrait();
+      const vertical = !isPhone() && (recLayout === "vertical" || isPortrait());
       const p = mapImg(
         vertical ? BANNER.vertVoidX : BANNER.voidX,
         vertical ? BANNER.vertVoidY : BANNER.voidY,
@@ -385,7 +416,7 @@
     }
 
     function drawSpectrumRing(cx, cy, radius, maxLen) {
-      const n = SPEC_BANDS;
+      const n = waveBands;
       const breathe = 1 + bands.sRms * 0.12 * sensitivity;
       const R = radius * breathe;
       const restOp = 0.15;
@@ -448,21 +479,32 @@
       const flick = 1 + flameFlicker * 0.03;
       const idle = running ? 1 : 0.4;
       const a = (0.42 + bass * 0.5 + mid * 0.15) * idle;
+      const sprite = flameGlowSprite();
+      const size = rad * 2.04 * flick;
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
-      ctx.translate(fx, fy);
-      ctx.scale(1, flick);
-      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, rad);
-      const core = hexRgb(pal.core), amb = hexRgb(pal.amber);
-      g.addColorStop(0, "rgba(" + core[0] + "," + core[1] + "," + core[2] + "," + (0.72 * a) + ")");
-      g.addColorStop(0.12, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + "," + (0.4 * a) + ")");
-      g.addColorStop(0.32, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + "," + (0.16 * a) + ")");
-      g.addColorStop(0.58, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + "," + (0.05 * a) + ")");
-      g.addColorStop(1, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0)");
-      ctx.fillStyle = g;
-      const ext = rad * 1.02;
-      ctx.fillRect(-ext, -ext, ext * 2, ext * 2);
+      ctx.globalAlpha = Math.max(0, Math.min(1, a));
+      ctx.drawImage(sprite, fx - size / 2, fy - size / 2, size, size * flick);
       ctx.restore();
+    }
+
+    function flameGlowSprite() {
+      if (drawSoftFlameGlow._sprite) return drawSoftFlameGlow._sprite;
+      const c = document.createElement("canvas");
+      c.width = 256;
+      c.height = 256;
+      const gctx = c.getContext("2d");
+      const g = gctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+      const core = hexRgb(pal.core), amb = hexRgb(pal.amber);
+      g.addColorStop(0, "rgba(" + core[0] + "," + core[1] + "," + core[2] + ",0.72)");
+      g.addColorStop(0.12, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0.4)");
+      g.addColorStop(0.32, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0.16)");
+      g.addColorStop(0.58, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0.05)");
+      g.addColorStop(1, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0)");
+      gctx.fillStyle = g;
+      gctx.fillRect(0, 0, 256, 256);
+      drawSoftFlameGlow._sprite = c;
+      return c;
     }
 
     function drawLivingSmoke(time) {
@@ -476,7 +518,7 @@
       if (!drawLivingSmoke._c) drawLivingSmoke._c = document.createElement("canvas");
       const oc = drawLivingSmoke._c;
       const longest = Math.max(r.w, r.h, 1);
-      const fit = Math.min(1, (960 * quality) / longest);
+      const fit = Math.min(1, ((isPhone() ? 520 : 960) * quality) / longest);
       const ow = Math.max(2, (r.w * fit) | 0);
       const oh = Math.max(2, (r.h * fit) | 0);
       if (oc.width !== ow || oc.height !== oh) { oc.width = ow; oc.height = oh; }
@@ -538,7 +580,7 @@
       }
       const oc = drawFilmSweep._c;
       const longest = Math.max(r.w, r.h, 1);
-      const fit = Math.min(1, (1100 * quality) / longest);
+      const fit = Math.min(1, ((isPhone() ? 640 : 1100) * quality) / longest);
       const ow = Math.max(2, (r.w * fit) | 0);
       const oh = Math.max(2, (r.h * fit) | 0);
       if (oc.width !== ow || oc.height !== oh) { oc.width = ow; oc.height = oh; }
@@ -572,6 +614,15 @@
       const coreR = (6 + eyeGlow * 4) * (sc * 1920 / 2560);
       const glowR = 30 * (sc * 1920 / 2560);
       const a = 0.12 + eyeGlow * 0.7;
+      if (isPhone()) {
+        const sprite = eyeGlowSprite();
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        ctx.globalAlpha = Math.max(0, Math.min(1, a));
+        ctx.drawImage(sprite, x - glowR, y - glowR, glowR * 2, glowR * 2);
+        ctx.restore();
+        return;
+      }
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
       const g = ctx.createRadialGradient(x, y, 0, x, y, glowR);
@@ -582,6 +633,23 @@
       ctx.fillStyle = g;
       ctx.fillRect(x - glowR, y - glowR, glowR * 2, glowR * 2);
       ctx.restore();
+    }
+
+    function eyeGlowSprite() {
+      if (drawEyeGlint._sprite) return drawEyeGlint._sprite;
+      const c = document.createElement("canvas");
+      c.width = 128;
+      c.height = 128;
+      const gctx = c.getContext("2d");
+      const g = gctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      const core = hexRgb(pal.core), amb = hexRgb(pal.amber);
+      g.addColorStop(0, "rgba(" + core[0] + "," + core[1] + "," + core[2] + ",0.85)");
+      g.addColorStop(0.22, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0.28)");
+      g.addColorStop(1, "rgba(" + amb[0] + "," + amb[1] + "," + amb[2] + ",0)");
+      gctx.fillStyle = g;
+      gctx.fillRect(0, 0, 128, 128);
+      drawEyeGlint._sprite = c;
+      return c;
     }
 
     function drawWineEdgeVignette() {
@@ -596,20 +664,29 @@
     }
 
     function drawBreathVignette() {
+      if (isPhone()) return;
       const e = bands.sEnergy * sensitivity;
       const pulseA = vignettePulse * 0.12;
       const dark = clamp(0.7 - e * 0.22 - pulseA, 0.32, 0.8);
-      const g = ctx.createRadialGradient(W * 0.5, H * 0.45, Math.min(W, H) * 0.16, W * 0.5, H * 0.5, Math.max(W, H) * 0.74);
-      g.addColorStop(0, "rgba(11,10,9,0)");
-      g.addColorStop(0.62, "rgba(11,10,9," + (dark * 0.2) + ")");
-      g.addColorStop(1, "rgba(11,10,9," + dark + ")");
-      ctx.fillStyle = g;
+      const key = (dark * 50 + 0.5) | 0;
+      if (drawBreathVignette._key !== key || drawBreathVignette._w !== W || drawBreathVignette._h !== H) {
+        const g = ctx.createRadialGradient(W * 0.5, H * 0.45, Math.min(W, H) * 0.16, W * 0.5, H * 0.5, Math.max(W, H) * 0.74);
+        const d = key / 50;
+        g.addColorStop(0, "rgba(11,10,9,0)");
+        g.addColorStop(0.62, "rgba(11,10,9," + (d * 0.2) + ")");
+        g.addColorStop(1, "rgba(11,10,9," + d + ")");
+        drawBreathVignette._g = g;
+        drawBreathVignette._key = key;
+        drawBreathVignette._w = W;
+        drawBreathVignette._h = H;
+      }
+      ctx.fillStyle = drawBreathVignette._g;
       ctx.fillRect(0, 0, W, H);
     }
 
     function drawGrainAndExposure() {
       if (reducedMotion) return;
-      const a = 0.04 + 0.02 * (0.5 + bands.sRms * 0.5);
+      const a = 0.045;
       if (grainImg.complete && grainImg.naturalWidth) {
         if (!drawGrainAndExposure._pat) {
           drawGrainAndExposure._pat = ctx.createPattern(grainImg, "repeat");
@@ -620,21 +697,13 @@
           ctx.globalAlpha = a;
           ctx.globalCompositeOperation = "overlay";
           const gw = grainImg.naturalWidth, gh = grainImg.naturalHeight;
-          const ox = ((performance.now() * 0.035) | 0) % gw;
-          const oy = ((performance.now() * 0.027) | 0) % gh;
+          const ox = 0;
+          const oy = 0;
           ctx.translate(ox, oy);
           ctx.fillStyle = pat;
           ctx.fillRect(-ox, -oy, W + gw, H + gh);
           ctx.restore();
         }
-      }
-      const exp = flameFlicker * 0.02;
-      if (exp > 0.001) {
-        ctx.fillStyle = "rgba(255,248,230," + exp + ")";
-        ctx.fillRect(0, 0, W, H);
-      } else if (exp < -0.001) {
-        ctx.fillStyle = "rgba(0,0,0," + (-exp) + ")";
-        ctx.fillRect(0, 0, W, H);
       }
     }
 
@@ -680,7 +749,7 @@
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.size * 0.4, 0, Math.PI * 2);
           ctx.fill();
-        } else {
+        } else if (!isPhone()) {
           ctx.globalCompositeOperation = "source-over";
           const r = p.size * (1.4 - a * 0.4);
           const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
@@ -690,50 +759,129 @@
           ctx.beginPath();
           ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
           ctx.fill();
+        } else {
+          ctx.globalCompositeOperation = "source-over";
+          const r = p.size * (1.4 - a * 0.4);
+          ctx.globalAlpha = 0.12 * a;
+          ctx.fillStyle = "rgb(200,190,170)";
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
         }
       }
       ctx.restore();
     }
 
-  function backingSize() {
-    const cssW = window.innerWidth || 1920;
-    const cssH = window.innerHeight || 1080;
-    const raw = window.devicePixelRatio || 1;
-    let bw = cssW * raw * quality;
-    let bh = cssH * raw * quality;
-    const cap = Math.min(1, 3840 / Math.max(bw, 1), 2160 / Math.max(bh, 1));
-    bw = Math.max(1, Math.floor(bw * cap));
-    bh = Math.max(1, Math.floor(bh * cap));
-    return { cssW: cssW, cssH: cssH, bw: bw, bh: bh };
+  function measureChrome() {
+    layoutPad = 0;
+    if (!controls) return;
+    const h = controls.offsetHeight || 0;
+    const bottom = Math.max(12, (parseFloat(getComputedStyle(controls).bottom) || 12));
+    const stack = Math.ceil(h + bottom + 14);
+    document.documentElement.style.setProperty("--bar-stack", stack + "px");
+    if (isPhone()) layoutPad = stack + 52;
   }
+
+  function viewportBox() {
+    const vv = window.visualViewport;
+    return {
+      w: Math.round((vv && vv.width) || window.innerWidth || 1920),
+      h: Math.round((vv && vv.height) || window.innerHeight || 1080),
+      left: (vv && vv.offsetLeft) || 0,
+      top: (vv && vv.offsetTop) || 0
+    };
+  }
+
+  function backingSize() {
+    const view = viewportBox();
+    const phone = isPhone();
+    const raw = Math.min(window.devicePixelRatio || 1, phone ? 1.5 : 3);
+    let bw = view.w * raw;
+    let bh = view.h * raw;
+    if (phone) {
+      const longSide = Math.max(bw, bh);
+      if (longSide > 1280) {
+        const fit = 1280 / longSide;
+        bw *= fit;
+        bh *= fit;
+      }
+    } else {
+      const cap = Math.min(1, 3840 / Math.max(bw, 1), 2160 / Math.max(bh, 1));
+      bw *= cap;
+      bh *= cap;
+    }
+    return {
+      cssW: view.w,
+      cssH: view.h,
+      bw: Math.max(1, Math.floor(bw)),
+      bh: Math.max(1, Math.floor(bh)),
+      left: view.left,
+      top: view.top
+    };
+  }
+
+  let appliedW = 0, appliedH = 0, appliedBW = 0, appliedBH = 0;
+  window.__eamResizes = 0;
 
   function resize() {
     const box = backingSize();
+    canvas.style.left = box.left + "px";
+    canvas.style.top = box.top + "px";
+    measureChrome();
+    const dw = Math.abs(box.cssW - appliedW);
+    const dh = Math.abs(box.cssH - appliedH);
+    const dbw = Math.abs(box.bw - appliedBW);
+    const dbh = Math.abs(box.bh - appliedBH);
+    if (appliedW && dw < 8 && dh < 8 && dbw < 16 && dbh < 16) return;
+    canvas.style.width = box.cssW + "px";
+    canvas.style.height = box.cssH + "px";
+    appliedW = box.cssW;
+    appliedH = box.cssH;
+    appliedBW = box.bw;
+    appliedBH = box.bh;
     W = box.cssW;
     H = box.cssH;
     dpr = box.bw / box.cssW;
+    waveBands = isPhone() ? 48 : SPEC_BANDS;
+    smokeStrip = isPhone() ? 16 : 5;
     canvas.width = box.bw;
     canvas.height = box.bh;
-    smokeStrip = quality < 0.99 ? 8 : 5;
+    drawGrainAndExposure._pat = null;
+    drawBreathVignette._g = null;
+    window.__eamResizes += 1;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  let resizeTimer = 0;
+  function scheduleResize() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
   }
 
   function noteWork(ms) {
     workSum += ms;
     workN++;
     window.__eamWork = workSum / workN;
-    if (drawnFrames < 45) return;
-    if (ms > 20) {
-      slowStreak++;
-      if (slowStreak >= 8 && quality > 0.56) {
-        quality = Math.max(0.56, quality * 0.75);
-        slowStreak = 0;
-        resize();
-      }
-    } else {
-      slowStreak = 0;
-    }
+    workRing[workRingI] = ms;
+    workRingI = (workRingI + 1) % workRing.length;
+    if (workRingN < workRing.length) workRingN++;
   }
+
+  window.__eamWorkStats = function () {
+    const n = workRingN;
+    if (!n) return { mean: 0, stdev: 0, n: 0 };
+    let s = 0;
+    let s2 = 0;
+    for (let k = 0; k < n; k++) {
+      const v = workRing[k];
+      s += v;
+      s2 += v * v;
+    }
+    const mean = s / n;
+    const variance = Math.max(0, s2 / n - mean * mean);
+    return { mean: mean, stdev: Math.sqrt(variance), n: n };
+  };
 
   function idleDrive(time, dt) {
     const calm = reducedMotion ? 0.45 : 1;
@@ -754,7 +902,7 @@
     filmFlicker = Math.max(0, filmFlicker - dt * 30);
     pulse = lerp(pulse, breath * 0.18 * calm, 1 - Math.pow(0.02, dt));
     const amp = reducedMotion ? 0.035 : (0.05 + breath * 0.07);
-    for (let i = 0; i < SPEC_BANDS; i++) {
+    for (let i = 0; i < waveBands; i++) {
       specBands[i] = amp * (0.62 + 0.38 * Math.sin(time * 0.75 + i * 0.2));
     }
   }
@@ -793,7 +941,7 @@
     if (!AC) return;
     audioCtx = new AC();
     analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 2048;
+    analyser.fftSize = isPhone() ? 1024 : 2048;
     analyser.smoothingTimeConstant = 0.8;
     analyser.minDecibels = -90;
     analyser.maxDecibels = -20;
@@ -1139,7 +1287,14 @@
     }
   });
 
-  window.addEventListener("resize", resize);
+  window.addEventListener("resize", scheduleResize);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", scheduleResize);
+  }
+  if (window.ResizeObserver && controls) {
+    const barObserver = new ResizeObserver(function () { measureChrome(); });
+    barObserver.observe(controls);
+  }
   resize();
   readVolume();
   revealControls();
