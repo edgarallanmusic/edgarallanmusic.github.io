@@ -35,21 +35,7 @@ To add a release, copy an object inside `"releases"` and edit it:
 
 ### Spotify links
 
-Use only an `https://open.spotify.com/...` URL you have opened and confirmed. If you do not have one yet, leave the link as a placeholder:
-
-```json
-{
-  "id": "new-release-spotify",
-  "title": "Title",
-  "url": null,
-  "status": "placeholder",
-  "note": "Placeholder. Spotify link not confirmed yet."
-}
-```
-
-The site prints that note on the card and does not invent a player. Do not guess an album ID.
-
-These releases are still placeholders: **Nat-Pan**, **The route**, **Good&Evil**, **perhaps**.
+Use only an `https://open.spotify.com/...` URL you have opened and confirmed. Do not guess an album ID. A confirmed URL becomes the Listen button and the on-page player.
 
 The player marked “Latest on the stand” is chosen by `"featured"` (`releaseId` plus `spotifyId`). Point those ids at entries that already exist in this file.
 
@@ -57,7 +43,7 @@ Podcast episodes live under `"podcast"`. Set `"releaseId"` to a release `id` whe
 
 ## Edit the prose
 
-The tagline, About text, and footer live in [`index.html`](index.html). The missing-page text lives in [`404.html`](404.html). Shared appearance is [`css/styles.css`](css/styles.css).
+The tagline, About text, and footer live in [`index.html`](index.html). Licensing copy lives in [`licensing/index.html`](licensing/index.html). The missing-page text lives in [`404.html`](404.html). Shared appearance is [`css/styles.css`](css/styles.css).
 
 ## Pictures
 

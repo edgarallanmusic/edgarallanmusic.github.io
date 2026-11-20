@@ -1,5 +1,5 @@
 {
-  "_note": "This file drives the discography and the podcast block. Copy a release object to add a record. Spotify links must be real https://open.spotify.com URLs you have opened and confirmed. If a link is not confirmed yet, leave url as null and status as \"placeholder\". Never invent an ID. The listening buttons, players, and placeholder notes on the site are generated from this file alone.",
+  "_note": "This file drives the discography and the podcast block. Copy a release object to add a record. Spotify links must be real https://open.spotify.com URLs you have opened and confirmed. Never invent an ID. Listening buttons and players on the site are generated from this file alone.",
   "featured": {
     "releaseId": "1984s-text",
     "spotifyId": "1984s-rectified",
@@ -126,9 +126,8 @@
         {
           "id": "nat-pan",
           "title": "Nat-Pan",
-          "url": null,
-          "status": "placeholder",
-          "note": "Placeholder. Spotify link not confirmed yet."
+          "url": "https://open.spotify.com/album/3L38HmOZ0jTGuB1CmDGj9Q",
+          "role": "primary"
         }
       ]
     },
@@ -206,9 +205,8 @@
         {
           "id": "the-route",
           "title": "The route",
-          "url": null,
-          "status": "placeholder",
-          "note": "Placeholder. Spotify link not confirmed yet."
+          "url": "https://open.spotify.com/album/5Ee45cfxkQxhrvMqVIn17s",
+          "role": "primary"
         }
       ]
     },
@@ -243,9 +241,8 @@
         {
           "id": "good-and-evil",
           "title": "Good&Evil",
-          "url": null,
-          "status": "placeholder",
-          "note": "Placeholder. Spotify link not confirmed yet."
+          "url": "https://open.spotify.com/album/3cMvh3P2fvxmRhcy9TPOfB",
+          "role": "primary"
         }
       ]
     },
@@ -262,9 +259,8 @@
         {
           "id": "perhaps",
           "title": "perhaps",
-          "url": null,
-          "status": "placeholder",
-          "note": "Placeholder. Spotify link not confirmed yet."
+          "url": "https://open.spotify.com/album/3kJGccVcd6DJwpbKZaC8sb",
+          "role": "primary"
         }
       ]
     }

@@ -140,15 +140,6 @@
       ]));
     }
 
-    links.filter(function (item) { return !safeHttps(item.url); }).forEach(function (item) {
-      var note = el("p", { class: "placeholder" });
-      note.appendChild(el("strong", { text: "Placeholder" }));
-      note.appendChild(document.createTextNode(
-        " " + (item.note || "Spotify link not confirmed yet.").replace(/^Placeholder\.\s*/i, "")
-      ));
-      body.push(note);
-    });
-
     if (primary) {
       var actions = el("div", { class: "actions" });
       actions.appendChild(externalLink(
