@@ -12,6 +12,9 @@
   const muteBtn = document.getElementById("mute");
   const volumeInput = document.getElementById("volume");
   const fsBtn = document.getElementById("full");
+  const listBtn = document.getElementById("list-toggle");
+  const trackPanel = document.getElementById("tracklist");
+  const trackBody = document.getElementById("tracklist-body");
   const controls = document.getElementById("controls");
   const audioEl = document.getElementById("track");
 
@@ -118,6 +121,7 @@
   const playlist = [];
   let trackIndex = 0;
   let assignedSrc = "";
+  let listOpen = false;
   let volume = 1;
   let muted = false;
   let lastNonZero = 1;
@@ -817,7 +821,7 @@
   }
 
   function setPlayVisible(show) {
-    [prevBtn, playBtn, nextBtn].forEach(function (btn) {
+    [prevBtn, playBtn, nextBtn, listBtn].forEach(function (btn) {
       btn.hidden = !show;
       btn.disabled = !show;
     });
@@ -871,6 +875,7 @@
     el.classList.toggle("is-preview", !!item.preview);
     document.getElementById("now-album").textContent = item.album || "";
     document.getElementById("now-title").textContent = item.title || "";
+    highlightCurrent();
   }
 
   function setPlayingUI(on) {
@@ -883,6 +888,7 @@
   function cue(index) {
     if (!playlist.length) return;
     trackIndex = (index % playlist.length + playlist.length) % playlist.length;
+    highlightCurrent();
   }
 
   function playCurrent() {
@@ -946,10 +952,84 @@
     controls.classList.remove("is-idle");
     document.documentElement.classList.remove("cursor-hidden");
     clearTimeout(hideTimer);
+    if (listOpen) return;
     hideTimer = setTimeout(function () {
       controls.classList.add("is-idle");
       syncCursorHide();
     }, 3200);
+  }
+
+  function appendGroup(title, rows, preview) {
+    var group = document.createElement("section");
+    group.className = "track-group";
+    var heading = document.createElement("h3");
+    heading.textContent = title;
+    group.appendChild(heading);
+    rows.forEach(function (row) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "track";
+      btn.dataset.index = String(row.index);
+      btn.textContent = row.item.title;
+      if (preview) btn.dataset.preview = "1";
+      btn.addEventListener("click", function () {
+        cue(row.index);
+        playCurrent();
+      });
+      group.appendChild(btn);
+    });
+    trackBody.appendChild(group);
+  }
+
+  function renderTracklist() {
+    if (!trackBody) return;
+    trackBody.replaceChildren();
+    var groups = [];
+    var previews = [];
+    playlist.forEach(function (item, index) {
+      if (item.preview) {
+        previews.push({ item: item, index: index });
+        return;
+      }
+      var found = null;
+      for (var i = 0; i < groups.length; i++) {
+        if (groups[i].album === item.album) found = groups[i];
+      }
+      if (!found) {
+        found = { album: item.album || "Tracks", items: [] };
+        groups.push(found);
+      }
+      found.items.push({ item: item, index: index });
+    });
+    groups.forEach(function (group) {
+      appendGroup(group.album, group.items, false);
+    });
+    if (previews.length) {
+      appendGroup(previews[0].item.album || "Previews", previews, true);
+    }
+    highlightCurrent();
+  }
+
+  function highlightCurrent() {
+    document.querySelectorAll("#tracklist .track").forEach(function (btn) {
+      var on = Number(btn.dataset.index) === trackIndex;
+      btn.classList.toggle("is-current", on);
+      if (on) btn.setAttribute("aria-current", "true");
+      else btn.removeAttribute("aria-current");
+    });
+  }
+
+  function setListOpen(open) {
+    listOpen = open;
+    trackPanel.hidden = !open;
+    listBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) {
+      revealControls();
+      var current = trackPanel.querySelector(".track.is-current") || trackPanel.querySelector(".track");
+      if (current) current.focus();
+    } else {
+      revealControls();
+    }
   }
 
   function nudge(event) {
@@ -983,11 +1063,38 @@
     nudge(event);
     toggleFullscreen();
   });
+  listBtn.addEventListener("click", function (event) {
+    nudge(event);
+    setListOpen(!listOpen);
+  });
+  trackPanel.addEventListener("click", function (event) {
+    if (event.target === trackPanel) setListOpen(false);
+  });
   document.addEventListener("keydown", function (event) {
     var tag = event.target && event.target.tagName;
     if (tag === "TEXTAREA") return;
     if (tag === "INPUT" && event.target.type !== "range") return;
+    if (event.key === "Escape" && listOpen) {
+      event.preventDefault();
+      setListOpen(false);
+      return;
+    }
+    if ((event.key === "l" || event.key === "L") && !event.metaKey && !event.ctrlKey && !event.altKey) {
+      event.preventDefault();
+      setListOpen(!listOpen);
+      return;
+    }
+    var inList = event.target && event.target.closest && event.target.closest("#tracklist");
+    if (inList && (event.key === "ArrowUp" || event.key === "ArrowDown")) {
+      event.preventDefault();
+      var tracks = Array.prototype.slice.call(document.querySelectorAll("#tracklist .track"));
+      var index = tracks.indexOf(event.target);
+      var next = tracks[index + (event.key === "ArrowDown" ? 1 : -1)];
+      if (next) next.focus();
+      return;
+    }
     if (event.key === " " || event.code === "Space") {
+      if (event.target && event.target.classList && event.target.classList.contains("track")) return;
       event.preventDefault();
       togglePlay();
     } else if (event.key === "ArrowLeft") {
@@ -1070,5 +1177,6 @@
       setPlayVisible(true);
       setPlayingUI(false);
       cue(0);
+      renderTracklist();
     });
 })();
