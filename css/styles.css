@@ -211,7 +211,6 @@ a:hover {
   border: 1px solid var(--line);
   background: transparent;
   color: var(--cream);
-  cursor: pointer;
 }
 
 .bars,
@@ -575,7 +574,6 @@ h2::after {
   font-size: 1rem;
   line-height: 1.2;
   text-decoration: none;
-  cursor: pointer;
 }
 
 .btn-amber {

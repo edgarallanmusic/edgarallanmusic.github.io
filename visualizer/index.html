@@ -95,7 +95,6 @@
       font-family: "Cormorant Garamond", Palatino, Georgia, serif;
       font-size: 1.15rem;
       letter-spacing: 0.08em;
-      cursor: pointer;
     }
     .controls button:hover,
     .controls button:focus-visible {
@@ -104,14 +103,44 @@
       outline: none;
     }
     .controls button[hidden] { display: none; }
+    .now {
+      position: fixed;
+      z-index: 3;
+      left: 1rem;
+      bottom: 1.15rem;
+      margin: 0;
+      max-width: min(18rem, 70vw);
+      color: var(--cream);
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);
+      pointer-events: none;
+    }
+    .now[hidden] { display: none; }
+    .now-kind {
+      display: none;
+      margin-bottom: 0.15rem;
+      color: var(--amber);
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .now.is-preview .now-kind { display: block; }
     @media (prefers-reduced-motion: reduce) {
       .controls { transition: none; }
     }
   </style>
+  <link rel="stylesheet" href="../css/cursor.css">
 </head>
-<body>
+<body data-cursor-trail="off">
   <canvas id="c" aria-label="Raven and candle, moving with the music"></canvas>
   <a class="mark" href="../index.html">EdgarAllanMusic</a>
+  <p id="now-playing" class="now" hidden>
+    <span id="now-kind" class="now-kind">Preview</span>
+    <span id="now-album"></span>
+  </p>
   <audio id="track" preload="none"></audio>
   <div id="controls" class="controls">
     <button type="button" id="play" hidden disabled aria-pressed="false">Play</button>

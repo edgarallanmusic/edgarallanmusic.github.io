@@ -815,10 +815,29 @@
     }
   }
 
+  function currentItem() {
+    return playlist[trackIndex] || null;
+  }
+
+  function showNow(on) {
+    var el = document.getElementById("now-playing");
+    if (!el) return;
+    var item = currentItem();
+    if (!on || !item) {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.classList.toggle("is-preview", !!item.preview);
+    var album = document.getElementById("now-album");
+    album.textContent = item.album || item.title || "";
+  }
+
   function setPlayingUI(on) {
     playBtn.textContent = on ? "Pause" : "Play";
     playBtn.setAttribute("aria-pressed", on ? "true" : "false");
     playBtn.setAttribute("aria-label", on ? "Pause" : "Play");
+    showNow(on);
   }
 
   function loadTrack(index) {
@@ -874,10 +893,19 @@
     fsBtn.setAttribute("aria-pressed", on ? "true" : "false");
   }
 
+  function syncCursorHide() {
+    var idle = controls.classList.contains("is-idle");
+    document.documentElement.classList.toggle("cursor-hidden", !!(document.fullscreenElement && idle));
+  }
+
   function revealControls() {
     controls.classList.remove("is-idle");
+    document.documentElement.classList.remove("cursor-hidden");
     clearTimeout(hideTimer);
-    hideTimer = setTimeout(function () { controls.classList.add("is-idle"); }, 3200);
+    hideTimer = setTimeout(function () {
+      controls.classList.add("is-idle");
+      syncCursorHide();
+    }, 3200);
   }
 
   playBtn.addEventListener("click", function (event) {
@@ -890,7 +918,10 @@
     revealControls();
     toggleFullscreen();
   });
-  document.addEventListener("fullscreenchange", syncFullscreenLabel);
+  document.addEventListener("fullscreenchange", function () {
+    syncFullscreenLabel();
+    syncCursorHide();
+  });
   window.addEventListener("pointermove", revealControls);
   window.addEventListener("pointerdown", revealControls);
   audioEl.addEventListener("ended", function () {
@@ -921,13 +952,25 @@
     .then(function (response) { return response.ok ? response.json() : []; })
     .catch(function () { return []; })
     .then(function (data) {
-      const list = Array.isArray(data) ? data : [];
       playlist.length = 0;
-      for (let i = 0; i < list.length; i++) {
-        const item = list[i] || {};
-        const href = sameOriginAudio(item.src);
-        if (!href) continue;
-        playlist.push({ title: item.title || "Track", src: href });
+      function pushItems(list, preview) {
+        if (!Array.isArray(list)) return;
+        for (let i = 0; i < list.length; i++) {
+          const item = list[i] || {};
+          const href = sameOriginAudio(item.src);
+          if (!href) continue;
+          playlist.push({
+            album: item.album || "",
+            title: item.title || "Track",
+            src: href,
+            preview: !!preview
+          });
+        }
+      }
+      if (Array.isArray(data)) pushItems(data, false);
+      else if (data && typeof data === "object") {
+        pushItems(data.tracks, false);
+        pushItems(data.previews, true);
       }
       if (!playlist.length) {
         setPlayVisible(false);

@@ -80,20 +80,31 @@ Display type is Cormorant Garamond. Body type is Source Serif 4. Both are under 
 
 The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. Visitors get Play and Fullscreen. There is no palette picker and no recorder.
 
-`visualizer/playlist.json` starts empty, so the page rests on a slow candle. The Play button stays hidden until a track is listed.
+`visualizer/playlist.json` has two empty lists, `tracks` and `previews`, so the page rests on a slow candle. The Play button stays hidden until a track is listed. While a track plays, its `album` name sits in the corner.
+
+The albums meant for `tracks` are **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**. `previews` is for short fragments. The first of those will be **EcceH.text (Revalued)**.
 
 To publish a track:
 
 1. Put the file in `visualizer/audio/`. It has to live on this site. The player will not load audio from another domain.
-2. Add it to `visualizer/playlist.json`:
+2. Add an object to `tracks` (or to `previews` for a fragment):
 
 ```json
-[
-  { "title": "The face that never sleeps", "src": "audio/the-face-that-never-sleeps.mp3" }
-]
+{
+  "tracks": [
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "The face that never sleeps - Rectified",
+      "src": "audio/the-face-that-never-sleeps.mp3"
+    }
+  ],
+  "previews": []
+}
 ```
 
-`src` is a path relative to the `visualizer/` folder. The list plays in order, then repeats. Use mp3 or wav.
+`src` is a path relative to the `visualizer/` folder. `tracks` play first, then `previews`. The list repeats. Use mp3 or wav.
+
+The pointer is a small candle-quill. `css/cursor.css` applies it on the home page, the visualizer, and the 404. Links and buttons use the brighter flame. Text fields keep the text cursor.
 
 ## GitHub Pages
 

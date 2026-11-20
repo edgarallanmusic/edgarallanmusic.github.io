@@ -1,0 +1,71 @@
+/* Candle-quill cursor. Hotspot is the flame tip (6, 4 on the 32px image).
+   The image-set line is the 2x asset on dense screens. auto / pointer / text
+   remain if the image cannot be used. */
+
+html {
+  cursor: url("../assets/cursor/flame-32.png") 6 4, auto;
+  cursor: image-set(
+    url("../assets/cursor/flame-32.png") 1x,
+    url("../assets/cursor/flame-64.png") 2x
+  ) 6 4, auto;
+}
+
+a[href],
+a.btn,
+button,
+.btn,
+.nav-toggle,
+summary,
+label,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+input[type="file"] {
+  cursor: url("../assets/cursor/flame-hot-32.png") 6 4, pointer;
+  cursor: image-set(
+    url("../assets/cursor/flame-hot-32.png") 1x,
+    url("../assets/cursor/flame-hot-64.png") 2x
+  ) 6 4, pointer;
+}
+
+input:not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]):not([type="image"]),
+textarea,
+select,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+html.cursor-hidden,
+html.cursor-hidden * {
+  cursor: none !important;
+}
+
+.ember {
+  position: fixed;
+  z-index: 2;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff6e4 0%, #e8a84a 42%, rgba(232, 168, 74, 0) 72%);
+  animation: ember-fade 680ms ease-out forwards;
+}
+
+@keyframes ember-fade {
+  to {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0) scale(0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember {
+    display: none;
+    animation: none;
+  }
+}

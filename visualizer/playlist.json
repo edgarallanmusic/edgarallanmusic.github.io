@@ -1,1 +1,5 @@
-[]
+{
+  "_note": "tracks are full songs. Each item is {album, title, src}. src is a file under visualizer/audio/ on this site. The albums meant for this player are 1984s.text (Rectified), Sidd-hartha.text (Reawakened), and You Kan't (Reconditioned). previews are short fragments; the first of those will be EcceH.text (Revalued). Both lists are empty until the audio files are added.",
+  "tracks": [],
+  "previews": []
+}
