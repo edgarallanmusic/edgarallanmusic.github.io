@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visualizer — EdgarAllanMusic</title>
+  <meta name="description" content="The raven and the candle, moving with the music. EdgarAllanMusic visualizer.">
+  <meta name="theme-color" content="#0b0a09">
+  <meta name="color-scheme" content="dark">
+  <link rel="canonical" href="https://edgarallanmusic.github.io/visualizer/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="EdgarAllanMusic">
+  <meta property="og:url" content="https://edgarallanmusic.github.io/visualizer/">
+  <meta property="og:title" content="Visualizer — EdgarAllanMusic">
+  <meta property="og:description" content="The raven and the candle, moving with the music.">
+  <meta property="og:image" content="https://edgarallanmusic.github.io/assets/og.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A raven perched on old books beside a dripping candle.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Visualizer — EdgarAllanMusic">
+  <meta name="twitter:description" content="The raven and the candle, moving with the music.">
+  <meta name="twitter:image" content="https://edgarallanmusic.github.io/assets/og.jpg">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="../assets/favicon-32.png" sizes="32x32">
+  <link rel="preload" href="assets/banner.webp" as="image">
+  <style>
+    @font-face {
+      font-family: "Cormorant Garamond";
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url("../assets/fonts/cormorant-garamond-500.woff2") format("woff2");
+    }
+    :root {
+      --carbon: #0b0a09;
+      --cream: #efe6d2;
+      --amber: #e0a24a;
+      --amber-hot: #ffd890;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--carbon);
+      color: var(--cream);
+      overflow: hidden;
+    }
+    #c {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: var(--carbon);
+    }
+    .mark {
+      position: fixed;
+      z-index: 3;
+      top: 0.85rem;
+      left: 0.95rem;
+      color: var(--cream);
+      text-decoration: none;
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
+    }
+    .mark:hover, .mark:focus-visible { color: var(--amber-hot); }
+    .controls {
+      position: fixed;
+      z-index: 3;
+      left: 50%;
+      bottom: 1.1rem;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 0.55rem;
+      opacity: 1;
+      transition: opacity 0.45s ease;
+    }
+    .controls.is-idle {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .controls button {
+      appearance: none;
+      min-height: 44px;
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(239, 230, 210, 0.38);
+      background: rgba(11, 10, 9, 0.55);
+      color: var(--cream);
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+    .controls button:hover,
+    .controls button:focus-visible {
+      border-color: var(--amber);
+      color: var(--amber-hot);
+      outline: none;
+    }
+    .controls button[hidden] { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .controls { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c" aria-label="Raven and candle, moving with the music"></canvas>
+  <a class="mark" href="../index.html">EdgarAllanMusic</a>
+  <audio id="track" preload="none"></audio>
+  <div id="controls" class="controls">
+    <button type="button" id="play" hidden disabled aria-pressed="false">Play</button>
+    <button type="button" id="full" aria-pressed="false">Fullscreen</button>
+  </div>
+  <script src="visualizer.js"></script>
+</body>
+</html>

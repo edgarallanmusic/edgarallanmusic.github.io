@@ -76,6 +76,25 @@ Replace a file with the same name if the art changes. Keep hero and `og.jpg` rea
 
 Display type is Cormorant Garamond. Body type is Source Serif 4. Both are under the SIL Open Font License. Files are in `assets/fonts/`.
 
+## Visualizer
+
+The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. Visitors get Play and Fullscreen. There is no palette picker and no recorder.
+
+`visualizer/playlist.json` starts empty, so the page rests on a slow candle. The Play button stays hidden until a track is listed.
+
+To publish a track:
+
+1. Put the file in `visualizer/audio/`. It has to live on this site. The player will not load audio from another domain.
+2. Add it to `visualizer/playlist.json`:
+
+```json
+[
+  { "title": "The face that never sleeps", "src": "audio/the-face-that-never-sleeps.mp3" }
+]
+```
+
+`src` is a path relative to the `visualizer/` folder. The list plays in order, then repeats. Use mp3 or wav.
+
 ## GitHub Pages
 
 This is a user site. GitHub serves it from the default branch `main`, from the repository root, at `https://edgarallanmusic.github.io`.
