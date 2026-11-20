@@ -78,11 +78,9 @@ Display type is Cormorant Garamond. Body type is Source Serif 4. Both are under 
 
 ## Visualizer
 
-The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. Visitors get Play and Fullscreen. There is no palette picker and no recorder.
+The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. The bar is Previous, Play/Pause, Next, volume, and Fullscreen. There is no palette picker and no recorder.
 
-`visualizer/playlist.json` has two empty lists, `tracks` and `previews`, so the page rests on a slow candle. The Play button stays hidden until a track is listed. While a track plays, its `album` name sits in the corner.
-
-The albums meant for `tracks` are **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**. `previews` is for short fragments. The first of those will be **EcceH.text (Revalued)**.
+`tracks` already holds the fifteen songs from **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**, in that order. `previews` stays empty until short fragments are added. The first of those will be **EcceH.text (Revalued)**. While a track plays, the album name and the song title sit in the corner. Nothing is fetched until Play.
 
 To publish a track:
 
@@ -95,7 +93,7 @@ To publish a track:
     {
       "album": "1984s.text (Rectified)",
       "title": "The face that never sleeps - Rectified",
-      "src": "audio/the-face-that-never-sleeps.mp3"
+      "src": "audio/1984s-text-rectified/01-the-face-that-never-sleeps-rectified.mp3"
     }
   ],
   "previews": []
