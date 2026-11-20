@@ -1,0 +1,272 @@
+{
+  "_note": "This file drives the discography and the podcast block. Copy a release object to add a record. Spotify links must be real https://open.spotify.com URLs you have opened and confirmed. If a link is not confirmed yet, leave url as null and status as \"placeholder\". Never invent an ID. The listening buttons, players, and placeholder notes on the site are generated from this file alone.",
+  "featured": {
+    "releaseId": "1984s-text",
+    "spotifyId": "1984s-rectified",
+    "kicker": "Latest on the stand",
+    "text": "A darkwave reading of Nineteen Eighty-Four. This later edition is the one standing at the front of the shelf."
+  },
+  "podcast": {
+    "title": "Music.txt",
+    "url": "https://open.spotify.com/show/4pDxCaA8riemfYgCbu6GnE",
+    "verified": true,
+    "summary": "Two episodes are confirmed.",
+    "episodes": [
+      {
+        "title": "1984s.txt",
+        "url": "https://open.spotify.com/episode/2Og1KrirhkQ8Tp2Y36PISc",
+        "verified": true,
+        "releaseId": "1984s-text"
+      },
+      {
+        "title": "Sidd-hartha.txt",
+        "url": "https://open.spotify.com/episode/3B54MSjgXzxjLInGdv4qwH",
+        "verified": true,
+        "releaseId": "siddhartha-reawakened"
+      }
+    ]
+  },
+  "releases": [
+    {
+      "id": "1984s-text",
+      "title": "1984s.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "Nineteen Eighty-Four",
+      "author": "George Orwell",
+      "genre": "Darkwave",
+      "summary": "A city of glass, and a face that does not sleep. Cold keys for a book in which the screen looks back.",
+      "spotify": [
+        {
+          "id": "1984s",
+          "title": "1984s.text",
+          "url": "https://open.spotify.com/album/4fjPRK91z07Tgdn21g8zTP",
+          "role": "primary"
+        },
+        {
+          "id": "1984s-rectified",
+          "title": "1984s.text (Rectified)",
+          "url": "https://open.spotify.com/album/029eCFiiDmRSB1z1lXbNG7",
+          "role": "edition",
+          "note": "Later edition"
+        }
+      ]
+    },
+    {
+      "id": "siddhartha-reawakened",
+      "title": "Sidd-hartha.text (Reawakened)",
+      "format": "ep",
+      "year": 2026,
+      "work": "Siddhartha",
+      "author": "Hermann Hesse",
+      "genre": "90s boom-bap",
+      "summary": "From temple to river to unity. A 90s boom-bap telling of Hesse’s seeker, walking until the self goes quiet.",
+      "spotify": [
+        {
+          "id": "siddhartha-reawakened",
+          "title": "Sidd-hartha.text (Reawakened)",
+          "url": "https://open.spotify.com/album/7npYMrlsctHpUxXd8994Y9",
+          "role": "primary"
+        },
+        {
+          "id": "siddhartha-earlier",
+          "title": "Sidd-hartha.text",
+          "url": "https://open.spotify.com/album/7KOBO8L16oUEH2T84Zp0kN",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ]
+    },
+    {
+      "id": "purgatorio",
+      "title": "PurgatorioDD.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "The Divine Comedy",
+      "author": "Dante Alighieri",
+      "genre": "Symphonic metal",
+      "summary": "The mountain after the pit. Choir and iron for the climb, each ledge a weight learning how to rise.",
+      "spotify": [
+        {
+          "id": "purgatorio",
+          "title": "PurgatorioDD.text",
+          "url": "https://open.spotify.com/album/7nvzWN7bdbYSkR7sHbM9XS",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "the-double",
+      "title": "The doubleFD.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "The Double",
+      "author": "Fyodor Dostoevsky",
+      "genre": "Nu-metal",
+      "summary": "A man meets the other man who wears his face. Nu-metal for the laugh in the doorway that is his, and is not.",
+      "spotify": [
+        {
+          "id": "the-double",
+          "title": "The doubleFD.text",
+          "url": "https://open.spotify.com/album/3Z0ndsM9ZmYYWl7pSj4hp5",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "nat-pan",
+      "title": "Nat-Pan",
+      "format": "ep",
+      "year": 2026,
+      "work": "Zaphnath-Paaneah",
+      "author": "The story of Joseph",
+      "genre": null,
+      "summary": "Joseph before Pharaoh. The dreams no one in the court could read, and the name a king gives the interpreter.",
+      "spotify": [
+        {
+          "id": "nat-pan",
+          "title": "Nat-Pan",
+          "url": null,
+          "status": "placeholder",
+          "note": "Placeholder. Spotify link not confirmed yet."
+        }
+      ]
+    },
+    {
+      "id": "sg-text",
+      "title": "Sg.text",
+      "format": "ep",
+      "year": 2026,
+      "work": null,
+      "author": "Sigmund Freud",
+      "genre": null,
+      "summary": "The couch, the dream, the slip of the tongue. A record leaned over the voice that says one thing and means another.",
+      "spotify": [
+        {
+          "id": "sg-text",
+          "title": "Sg.text",
+          "url": "https://open.spotify.com/album/1B9Ev8zEMn7E9HvGPG7Ndx",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "you-kant",
+      "title": "You Kan't",
+      "format": "ep",
+      "year": 2026,
+      "work": null,
+      "author": "Ivan Pavlov and B. F. Skinner",
+      "genre": null,
+      "summary": "Bells, rewards, the trained flinch. A study of conditioning: what the hand does before the mind has agreed.",
+      "spotify": [
+        {
+          "id": "you-kant",
+          "title": "You Kan't",
+          "url": "https://open.spotify.com/album/3CIyUVCPng3AyTRZxdBpFQ",
+          "role": "primary"
+        },
+        {
+          "id": "you-kant-reconditioned",
+          "title": "You Kan't (Reconditioned)",
+          "url": "https://open.spotify.com/album/70FNNopr5XB6RU6k9WxnXH",
+          "role": "edition",
+          "note": "Later edition"
+        }
+      ]
+    },
+    {
+      "id": "ecceh",
+      "title": "EcceH.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "Ecce Homo",
+      "author": "Friedrich Nietzsche",
+      "genre": null,
+      "summary": "Behold the man. Nietzsche writing his own legend, set down here in his own hard light.",
+      "spotify": [
+        {
+          "id": "ecceh",
+          "title": "EcceH.text",
+          "url": "https://open.spotify.com/album/7wPqnaZVWMpuMXlHJjgJo3",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "the-route",
+      "title": "The route",
+      "format": "single",
+      "year": 2026,
+      "work": "Hesse’s inner path",
+      "author": "Hermann Hesse",
+      "genre": null,
+      "summary": "A single for the road that only exists under the feet. Hesse’s inner path, walked once, and sung.",
+      "spotify": [
+        {
+          "id": "the-route",
+          "title": "The route",
+          "url": null,
+          "status": "placeholder",
+          "note": "Placeholder. Spotify link not confirmed yet."
+        }
+      ]
+    },
+    {
+      "id": "white-nights",
+      "title": "White nights",
+      "format": "single",
+      "year": 2026,
+      "work": "White Nights",
+      "author": "Fyodor Dostoevsky",
+      "genre": null,
+      "summary": "Four bright nights and a dream of being known. A stranger in Petersburg tells his heart to another stranger.",
+      "spotify": [
+        {
+          "id": "white-nights",
+          "title": "White nights",
+          "url": "https://open.spotify.com/album/0aQF6cDhmer4C6sMgY3SXg",
+          "role": "primary"
+        }
+      ]
+    },
+    {
+      "id": "good-and-evil",
+      "title": "Good&Evil",
+      "format": "single",
+      "year": 2026,
+      "work": "Beyond Good and Evil",
+      "author": "Friedrich Nietzsche",
+      "genre": null,
+      "summary": "Past the old gate marked good and evil. A song that keeps walking after the comfortable verdict.",
+      "spotify": [
+        {
+          "id": "good-and-evil",
+          "title": "Good&Evil",
+          "url": null,
+          "status": "placeholder",
+          "note": "Placeholder. Spotify link not confirmed yet."
+        }
+      ]
+    },
+    {
+      "id": "perhaps",
+      "title": "perhaps",
+      "format": "single",
+      "year": 2026,
+      "work": null,
+      "author": null,
+      "genre": null,
+      "summary": "No book stands behind this one. It is just a song, left burning after the others have said their piece.",
+      "spotify": [
+        {
+          "id": "perhaps",
+          "title": "perhaps",
+          "url": null,
+          "status": "placeholder",
+          "note": "Placeholder. Spotify link not confirmed yet."
+        }
+      ]
+    }
+  ]
+}
