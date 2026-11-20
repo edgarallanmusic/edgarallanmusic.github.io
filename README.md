@@ -76,6 +76,34 @@ Replace a file with the same name if the art changes. Keep hero and `og.jpg` rea
 
 Display type is Cormorant Garamond. Body type is Source Serif 4. Both are under the SIL Open Font License. Files are in `assets/fonts/`.
 
+## Visualizer
+
+The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. The bar is Previous, Play/Pause, Next, volume, and Fullscreen. There is no palette picker and no recorder.
+
+`tracks` already holds the fifteen songs from **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**, in that order. `previews` stays empty until short fragments are added. The first of those will be **EcceH.text (Revalued)**. While a track plays, the album name and the song title sit in the corner. Nothing is fetched until Play.
+
+To publish a track:
+
+1. Put the file in `visualizer/audio/`. It has to live on this site. The player will not load audio from another domain.
+2. Add an object to `tracks` (or to `previews` for a fragment):
+
+```json
+{
+  "tracks": [
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "The face that never sleeps - Rectified",
+      "src": "audio/1984s-text-rectified/01-the-face-that-never-sleeps-rectified.mp3"
+    }
+  ],
+  "previews": []
+}
+```
+
+`src` is a path relative to the `visualizer/` folder. `tracks` play first, then `previews`. The list repeats. Use mp3 or wav.
+
+The pointer is a small candle-quill. `css/cursor.css` applies it on the home page, the visualizer, and the 404. Links and buttons use the brighter flame. Text fields keep the text cursor.
+
 ## GitHub Pages
 
 This is a user site. GitHub serves it from the default branch `main`, from the repository root, at `https://edgarallanmusic.github.io`.

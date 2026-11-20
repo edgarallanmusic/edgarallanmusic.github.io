@@ -1,0 +1,81 @@
+{
+  "_note": "tracks play in order, then repeat. Each item is {album, title, src}. src is relative to visualizer/. previews stays empty until short fragments are added; the first of those will be EcceH.text (Revalued).",
+  "tracks": [
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "The face that never sleeps - Rectified",
+      "src": "audio/1984s-text-rectified/01-the-face-that-never-sleeps-rectified.mp3"
+    },
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "Two minutes hate - Rectified",
+      "src": "audio/1984s-text-rectified/02-two-minutes-hate-rectified.mp3"
+    },
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "The invisible hand - Rectified",
+      "src": "audio/1984s-text-rectified/03-the-invisible-hand-rectified.mp3"
+    },
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "Secret room - Rectified",
+      "src": "audio/1984s-text-rectified/04-secret-room-rectified.mp3"
+    },
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "Clothes off the lie - Rectified",
+      "src": "audio/1984s-text-rectified/05-clothes-off-the-lie-rectified.mp3"
+    },
+    {
+      "album": "1984s.text (Rectified)",
+      "title": "Room 101 I.L.B.B - Rectified",
+      "src": "audio/1984s-text-rectified/06-room-101-ilbb-rectified.mp3"
+    },
+    {
+      "album": "Sidd-hartha.text (Reawakened)",
+      "title": "Holy shade (Reawakened)",
+      "src": "audio/sidd-hartha-text-reawakened/01-holy-shade-reawakened.mp3"
+    },
+    {
+      "album": "Sidd-hartha.text (Reawakened)",
+      "title": "Wisdom can't be taught (Reawakened)",
+      "src": "audio/sidd-hartha-text-reawakened/02-wisdom-cant-be-taught-reawakened.mp3"
+    },
+    {
+      "album": "Sidd-hartha.text (Reawakened)",
+      "title": "Between the thorns and the silk (Reawakened)",
+      "src": "audio/sidd-hartha-text-reawakened/03-between-the-thorns-and-the-silk-reawakened.mp3"
+    },
+    {
+      "album": "Sidd-hartha.text (Reawakened)",
+      "title": "Unity and temporality (Reawakened)",
+      "src": "audio/sidd-hartha-text-reawakened/04-unity-and-temporality-reawakened.mp3"
+    },
+    {
+      "album": "You Kan't (Reconditioned)",
+      "title": "Prophet dogs",
+      "src": "audio/you-kant-reconditioned/01-prophet-dogs.mp3"
+    },
+    {
+      "album": "You Kan't (Reconditioned)",
+      "title": "Father of behavior",
+      "src": "audio/you-kant-reconditioned/02-father-of-behavior.mp3"
+    },
+    {
+      "album": "You Kan't (Reconditioned)",
+      "title": "Hidden bells",
+      "src": "audio/you-kant-reconditioned/03-hidden-bells.mp3"
+    },
+    {
+      "album": "You Kan't (Reconditioned)",
+      "title": "No ghost in the machine",
+      "src": "audio/you-kant-reconditioned/04-no-ghost-in-the-machine.mp3"
+    },
+    {
+      "album": "You Kan't (Reconditioned)",
+      "title": "Conditioned flame",
+      "src": "audio/you-kant-reconditioned/05-conditioned-flame.mp3"
+    }
+  ],
+  "previews": []
+}
