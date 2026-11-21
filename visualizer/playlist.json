@@ -1,5 +1,5 @@
 {
-  "_note": "tracks play in order, then repeat. Each item is {album, title, src}. src is relative to visualizer/. previews stays empty until short fragments are added; the first of those will be EcceH.text (Revalued).",
+  "_note": "tracks play in order, then repeat. Each item is {album, title, src}. src is relative to visualizer/. previews are short fragments and are marked as such. EcceH.text (Revalued) is coming soon: Side A uses side-a-16x9.jpg, Side B uses side-b-16x9.jpg, and the list header uses the cover.",
   "tracks": [
     {
       "album": "1984s.text (Rectified)",
@@ -77,5 +77,41 @@
       "src": "audio/you-kant-reconditioned/05-conditioned-flame.mp3"
     }
   ],
-  "previews": []
+  "previews": [
+    {
+      "album": "EcceH.text (Revalued) — Coming soon",
+      "title": "Becoming the Flame",
+      "src": "audio/ecceh-revalued/01-becoming-the-flame-preview.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg"
+    },
+    {
+      "album": "EcceH.text (Revalued) — Coming soon",
+      "title": "Solitude as Weapon",
+      "src": "audio/ecceh-revalued/02-solitude-as-weapon-preview.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg"
+    },
+    {
+      "album": "EcceH.text (Revalued) — Coming soon",
+      "title": "The Clean Knife of Truth",
+      "src": "audio/ecceh-revalued/03-the-clean-knife-of-truth-preview.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg"
+    },
+    {
+      "album": "EcceH.text (Revalued) — Coming soon",
+      "title": "Amor Fati",
+      "src": "audio/ecceh-revalued/04-amor-fati-preview.mp3",
+      "art": "assets/ecceh/side-b-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg"
+    },
+    {
+      "album": "EcceH.text (Revalued) — Coming soon",
+      "title": "Dynamite",
+      "src": "audio/ecceh-revalued/05-dynamite-preview.mp3",
+      "art": "assets/ecceh/side-b-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg"
+    }
+  ]
 }

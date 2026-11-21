@@ -462,10 +462,31 @@
       ctx.restore();
     }
 
+    const artCache = Object.create(null);
+    function rememberArt(src) {
+      if (!src || artCache[src]) return;
+      const img = new Image();
+      img.src = src;
+      artCache[src] = img;
+    }
+    function loadedArt(item) {
+      if (!item || !item.art) return null;
+      const img = artCache[item.art];
+      if (img && img.complete && img.naturalWidth) return img;
+      return null;
+    }
+    function stageImage() {
+      const photo = running ? loadedArt(currentItem()) : null;
+      const img = photo || bannerImg;
+      window.__eamArt = photo ? currentItem().art : "";
+      return img;
+    }
+
     function drawBannerImage() {
-      if (assetsReady < 1) return;
+      const img = stageImage();
+      if (!img || !img.complete || !img.naturalWidth) return;
       const r = computeBannerRect();
-      ctx.drawImage(bannerImg, r.x, r.y, r.w, r.h);
+      ctx.drawImage(img, r.x, r.y, r.w, r.h);
     }
 
     function drawSoftFlameGlow() {
@@ -708,20 +729,25 @@
     }
 
     function drawPortada(time, dt) {
+      const photo = !!(running && loadedArt(currentItem()));
       computeBannerRect();
       drawBannerImage();
-      drawSoftFlameGlow();
-      drawLivingSmoke(time);
-      drawFilmSweep(time, dt);
+      if (!photo) {
+        drawSoftFlameGlow();
+        drawLivingSmoke(time);
+        drawFilmSweep(time, dt);
+      }
       const vp = getVoidPos();
       const ringR = BANNER.ringR * bannerRect.w;
       const ringLen = ringR * 0.42;
       drawSpectrumRing(vp.x, vp.y, ringR, ringLen);
-      drawEyeGlint();
-      drawParticles(dt);
-      drawWineEdgeVignette();
-      drawBreathVignette();
-      drawGrainAndExposure();
+      if (!photo) {
+        drawEyeGlint();
+        drawParticles(dt);
+        drawWineEdgeVignette();
+        drawBreathVignette();
+        drawGrainAndExposure();
+      }
     }
 
     function drawParticles(dt) {
@@ -1107,19 +1133,48 @@
     }, 3200);
   }
 
+  function localAsset(src) {
+    if (!src || typeof src !== "string") return "";
+    if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return "";
+    return src;
+  }
+
   function appendGroup(title, rows, preview) {
     var group = document.createElement("section");
     group.className = "track-group";
     var heading = document.createElement("h3");
-    heading.textContent = title;
-    group.appendChild(heading);
+    var cover = preview && rows[0] && rows[0].item.cover;
+    if (cover) {
+      var head = document.createElement("div");
+      head.className = "track-head";
+      var img = document.createElement("img");
+      img.src = cover;
+      img.alt = "";
+      img.width = 72;
+      img.height = 72;
+      head.appendChild(img);
+      heading.textContent = title;
+      head.appendChild(heading);
+      group.appendChild(head);
+    } else {
+      heading.textContent = title;
+      group.appendChild(heading);
+    }
     rows.forEach(function (row) {
       var btn = document.createElement("button");
       btn.type = "button";
       btn.className = "track";
       btn.dataset.index = String(row.index);
-      btn.textContent = row.item.title;
-      if (preview) btn.dataset.preview = "1";
+      var name = document.createElement("span");
+      name.textContent = row.item.title;
+      btn.appendChild(name);
+      if (preview) {
+        btn.dataset.preview = "1";
+        var kind = document.createElement("span");
+        kind.className = "track-kind";
+        kind.textContent = "Preview";
+        btn.appendChild(kind);
+      }
       btn.addEventListener("click", function () {
         cue(row.index);
         playCurrent();
@@ -1316,8 +1371,12 @@
             album: item.album || "",
             title: item.title || "Track",
             src: href,
-            preview: !!preview
+            preview: !!preview,
+            art: localAsset(item.art),
+            cover: localAsset(item.cover)
           });
+          if (item.art) rememberArt(localAsset(item.art));
+          if (item.cover) rememberArt(localAsset(item.cover));
         }
       }
       if (Array.isArray(data)) pushItems(data, false);
@@ -1333,5 +1392,6 @@
       setPlayingUI(false);
       cue(0);
       renderTracklist();
+      if (location.hash === "#previews") setListOpen(true);
     });
 })();

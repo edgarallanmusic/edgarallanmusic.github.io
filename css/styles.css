@@ -525,6 +525,37 @@ h2::after {
   transform: translateY(-3px);
 }
 
+.card-upcoming {
+  overflow: hidden;
+  padding-top: 0;
+}
+
+.release-cover {
+  display: block;
+  width: calc(100% + 2.2rem);
+  max-width: none;
+  margin: 0 -1.1rem 0.95rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.coming {
+  color: var(--amber-hot);
+  font-family: var(--display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.preview-player {
+  margin-top: auto;
+  padding-top: 0.85rem;
+}
+
+.preview-title {
+  margin: 0 0 0.55rem;
+  color: var(--cream);
+}
+
 .card-top {
   display: flex;
   align-items: center;
