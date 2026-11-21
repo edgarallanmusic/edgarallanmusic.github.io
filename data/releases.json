@@ -175,6 +175,46 @@
       ]
     },
     {
+      "id": "ecceh-revalued",
+      "title": "EcceH.text (Revalued)",
+      "format": "ep",
+      "status": "upcoming",
+      "year": null,
+      "work": "Ecce Homo",
+      "author": "Friedrich Nietzsche",
+      "genre": null,
+      "summary": "A remaster of the EcceH.text EP, drawn from Nietzsche’s Ecce Homo. The full record is still ahead.",
+      "cover": "visualizer/assets/ecceh/cover-1200.jpg",
+      "previews": [
+        {
+          "title": "Becoming the Flame",
+          "src": "visualizer/audio/ecceh-revalued/01-becoming-the-flame-preview.mp3",
+          "side": "A"
+        },
+        {
+          "title": "Solitude as Weapon",
+          "src": "visualizer/audio/ecceh-revalued/02-solitude-as-weapon-preview.mp3",
+          "side": "A"
+        },
+        {
+          "title": "The Clean Knife of Truth",
+          "src": "visualizer/audio/ecceh-revalued/03-the-clean-knife-of-truth-preview.mp3",
+          "side": "A"
+        },
+        {
+          "title": "Amor Fati",
+          "src": "visualizer/audio/ecceh-revalued/04-amor-fati-preview.mp3",
+          "side": "B"
+        },
+        {
+          "title": "Dynamite",
+          "src": "visualizer/audio/ecceh-revalued/05-dynamite-preview.mp3",
+          "side": "B"
+        }
+      ],
+      "spotify": []
+    },
+    {
       "id": "ecceh",
       "title": "EcceH.text",
       "format": "ep",

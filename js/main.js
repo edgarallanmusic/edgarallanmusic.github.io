@@ -70,17 +70,27 @@
   function renderCatalog(data) {
     var releases = Array.isArray(data.releases) ? data.releases : [];
     var episodes = (data.podcast && data.podcast.episodes) || [];
+    var upcoming = releases.filter(function (release) { return release.status === "upcoming"; });
+    var rest = releases.filter(function (release) { return release.status !== "upcoming"; });
+    if (upcoming.length) {
+      catalogRoot.appendChild(el("p", { class: "group-label", text: "Coming soon" }));
+      var soon = el("ul", { class: "cards" });
+      upcoming.forEach(function (release) {
+        soon.appendChild(renderCard(release, episodes));
+      });
+      catalogRoot.appendChild(soon);
+    }
     var groups = [
       { id: "ep", label: "EPs" },
       { id: "single", label: "Singles" }
     ];
     var known = {};
     groups.forEach(function (group) { known[group.id] = true; });
-    var extra = releases.some(function (release) { return !known[release.format]; });
+    var extra = rest.some(function (release) { return !known[release.format]; });
     if (extra) groups.push({ id: "other", label: "Also" });
 
     groups.forEach(function (group) {
-      var items = releases.filter(function (release) {
+      var items = rest.filter(function (release) {
         if (group.id === "other") return !known[release.format];
         return release.format === group.id;
       });
@@ -95,11 +105,22 @@
   }
 
   function renderCard(release, episodes) {
+    var upcoming = release.status === "upcoming";
     var top = el("p", { class: "card-top" }, [
       el("span", { class: "format", text: formatLabel(release.format) }),
-      release.year ? el("span", { class: "year", text: String(release.year) }) : null
+      upcoming
+        ? el("span", { class: "coming", text: "Coming soon" })
+        : (release.year ? el("span", { class: "year", text: String(release.year) }) : null)
     ]);
+    var cover = upcoming ? localImage(release.cover) : null;
     var body = [
+      cover ? el("img", {
+        class: "release-cover",
+        src: cover,
+        alt: "",
+        width: "1200",
+        height: "1200"
+      }) : null,
       top,
       el("h3", { text: release.title || "Untitled" })
     ];
@@ -114,6 +135,10 @@
     }
     if (release.summary) {
       body.push(el("p", { class: "summary", text: release.summary }));
+    }
+    if (upcoming) {
+      body.push(el("p", { class: "fine", text: "Date TBA." }));
+      body.push(renderPreviewPlayer(release));
     }
 
     var links = Array.isArray(release.spotify) ? release.spotify : [];
@@ -175,7 +200,83 @@
       body.push(panel);
     }
 
-    return el("li", {}, [el("article", { class: "card" }, body)]);
+    return el("li", {}, [el("article", { class: upcoming ? "card card-upcoming" : "card" }, body)]);
+  }
+
+  var previewAudios = [];
+
+  function renderPreviewPlayer(release) {
+    var previews = (release.previews || []).filter(function (item) {
+      return item && localPreview(item.src);
+    });
+    var wrap = el("div", { class: "preview-player" });
+    if (!previews.length) return wrap;
+    var index = 0;
+    var audio = el("audio", { preload: "none" });
+    previewAudios.push(audio);
+    var title = el("p", { class: "preview-title", text: previewLabel(previews[0]) });
+    var play = el("button", { class: "btn btn-amber", type: "button" });
+    play.textContent = "Play preview";
+    function paint() {
+      title.textContent = previewLabel(previews[index]);
+      play.textContent = audio.paused ? "Play preview" : "Pause";
+      play.setAttribute("aria-label", (audio.paused ? "Play preview " : "Pause preview ") + previews[index].title);
+    }
+    function loadCurrent() {
+      var src = localPreview(previews[index].src);
+      if (audio.getAttribute("data-src") !== src) {
+        audio.src = src;
+        audio.setAttribute("data-src", src);
+      }
+    }
+    play.addEventListener("click", function () {
+      if (!audio.paused) {
+        audio.pause();
+        paint();
+        return;
+      }
+      previewAudios.forEach(function (other) {
+        if (other !== audio) other.pause();
+      });
+      loadCurrent();
+      audio.play().then(paint).catch(paint);
+    });
+    audio.addEventListener("play", paint);
+    audio.addEventListener("pause", paint);
+    audio.addEventListener("ended", function () {
+      index = (index + 1) % previews.length;
+      loadCurrent();
+      audio.play().catch(paint);
+    });
+    var link = el("a", {
+      class: "btn btn-ghost",
+      href: "visualizer/#previews"
+    });
+    link.textContent = "Listen to previews";
+    wrap.appendChild(title);
+    wrap.appendChild(el("div", { class: "actions" }, [play, link]));
+    wrap.appendChild(audio);
+    paint();
+    return wrap;
+  }
+
+  function previewLabel(item) {
+    var side = item.side ? "Side " + item.side + " · " : "";
+    return side + (item.title || "Preview");
+  }
+
+  function localPreview(src) {
+    if (!src || typeof src !== "string") return null;
+    if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return null;
+    if (src.indexOf("visualizer/audio/") !== 0 || !/\.mp3$/i.test(src)) return null;
+    return src;
+  }
+
+  function localImage(src) {
+    if (!src || typeof src !== "string") return null;
+    if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return null;
+    if (!/\.(jpe?g|png|webp)$/i.test(src)) return null;
+    return src;
   }
 
   function renderPodcast(data) {
