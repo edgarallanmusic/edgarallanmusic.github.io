@@ -13,6 +13,8 @@
   const volumeInput = document.getElementById("volume");
   const fsBtn = document.getElementById("full");
   const listBtn = document.getElementById("list-toggle");
+  const lyricsBtn = document.getElementById("lyrics-toggle");
+  const lyricsBox = document.getElementById("lyrics");
   const trackPanel = document.getElementById("tracklist");
   const trackBody = document.getElementById("tracklist-body");
   const controls = document.getElementById("controls");
@@ -955,6 +957,7 @@
     drawnFrames++;
     window.__eamFrames = drawnFrames;
     window.__eamQuality = quality;
+    syncLyrics();
     noteWork(performance.now() - work0);
   }
 
@@ -995,7 +998,7 @@
   }
 
   function setPlayVisible(show) {
-    [prevBtn, playBtn, nextBtn, listBtn].forEach(function (btn) {
+    [prevBtn, playBtn, nextBtn, listBtn, lyricsBtn].forEach(function (btn) {
       btn.hidden = !show;
       btn.disabled = !show;
     });
@@ -1076,6 +1079,7 @@
     audioEl.play().then(function () {
       running = true;
       setPlayingUI(true);
+      loadLyrics(item);
     }).catch(function () {
       running = false;
       setPlayingUI(false);
@@ -1137,6 +1141,171 @@
     if (!src || typeof src !== "string") return "";
     if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return "";
     return src;
+  }
+
+  function localLyrics(src) {
+    if (!src || typeof src !== "string") return "";
+    if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return "";
+    if (src.indexOf("lyrics/") !== 0 || !/\.lrc$/i.test(src)) return "";
+    return src;
+  }
+
+  var lyricsOn = true;
+  var lyricLines = [];
+  var lyricIndex = -2;
+  var lyricToken = 0;
+  var lyricKey = "";
+
+  function readLyricsPref() {
+    try {
+      if (localStorage.getItem("eam-visualizer-lyrics") === "0") lyricsOn = false;
+    } catch (e) {}
+    paintLyricsToggle();
+  }
+
+  function saveLyricsPref() {
+    try {
+      localStorage.setItem("eam-visualizer-lyrics", lyricsOn ? "1" : "0");
+    } catch (e) {}
+  }
+
+  function paintLyricsToggle() {
+    if (!lyricsBtn) return;
+    lyricsBtn.setAttribute("aria-pressed", lyricsOn ? "true" : "false");
+    lyricsBtn.setAttribute("aria-label", lyricsOn ? "Hide lyrics" : "Show lyrics");
+    lyricsBtn.classList.toggle("is-lyrics-off", !lyricsOn);
+    lyricIndex = -2;
+    syncLyrics();
+  }
+
+  function stampSeconds(min, sec, frac) {
+    var extra = 0;
+    if (frac) {
+      if (frac.length === 1) extra = Number(frac) / 10;
+      else if (frac.length === 2) extra = Number(frac) / 100;
+      else extra = Number(frac.slice(0, 3)) / 1000;
+    }
+    return Number(min) * 60 + Number(sec) + extra;
+  }
+
+  function parseLrc(text) {
+    var lines = [];
+    var rows = String(text || "").split(/\r?\n/);
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i];
+      if (/^\[(ti|ar|al|length|by|offset|re|ve):/i.test(row.trim())) continue;
+      var tags = row.match(/\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g);
+      if (!tags) continue;
+      var words = row.replace(/\[[^\]]*\]/g, "").trim();
+      for (var t = 0; t < tags.length; t++) {
+        var m = tags[t].match(/\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/);
+        if (!m) continue;
+        lines.push({ time: stampSeconds(m[1], m[2], m[3]), text: words });
+      }
+    }
+    lines.sort(function (a, b) { return a.time - b.time; });
+    return lines;
+  }
+
+  function lyricParts(text) {
+    var parts = [];
+    var re = /\(([^)]*)\)/g;
+    var last = 0;
+    var match;
+    while ((match = re.exec(text))) {
+      if (match.index > last) parts.push({ text: text.slice(last, match.index), back: false });
+      parts.push({ text: match[0], back: true });
+      last = match.index + match[0].length;
+    }
+    if (last < text.length) parts.push({ text: text.slice(last), back: false });
+    if (!parts.length && text) parts.push({ text: text, back: false });
+    return parts;
+  }
+
+  function lineText(idx) {
+    if (idx < 0 || idx >= lyricLines.length) return "";
+    return lyricLines[idx].text || "";
+  }
+
+  function fillLine(node, text, current) {
+    if (!node) return;
+    if (node.getAttribute("data-line") === text && node.classList.contains("is-current") === !!current) return;
+    node.setAttribute("data-line", text);
+    node.textContent = "";
+    node.classList.toggle("is-current", !!current);
+    if (!text) return;
+    lyricParts(text).forEach(function (part) {
+      if (!part.text) return;
+      if (part.back) {
+        var em = document.createElement("em");
+        em.textContent = part.text;
+        node.appendChild(em);
+      } else {
+        node.appendChild(document.createTextNode(part.text));
+      }
+    });
+    if (current) {
+      node.classList.remove("is-rise");
+      void node.offsetWidth;
+      node.classList.add("is-rise");
+    }
+  }
+
+  function paintLyrics(idx) {
+    if (!lyricsBox) return;
+    var text = lyricsOn ? lineText(idx) : "";
+    if (!text) {
+      if (!lyricsBox.hidden) lyricsBox.hidden = true;
+      return;
+    }
+    var lines = lyricsBox.querySelectorAll(".lyric-line");
+    fillLine(lines[0], lineText(idx - 1), false);
+    fillLine(lines[1], text, true);
+    fillLine(lines[2], lineText(idx + 1), false);
+    lyricsBox.hidden = false;
+  }
+
+  function syncLyrics() {
+    if (!lyricsOn || !lyricLines.length) {
+      paintLyrics(-1);
+      return;
+    }
+    var t = audioEl.currentTime || 0;
+    var idx = -1;
+    for (var i = 0; i < lyricLines.length; i++) {
+      if (lyricLines[i].time <= t + 0.03) idx = i;
+      else break;
+    }
+    if (idx === lyricIndex) return;
+    lyricIndex = idx;
+    paintLyrics(idx);
+  }
+
+  function loadLyrics(item) {
+    var path = item && item.lyrics;
+    if (lyricKey === (path || "") && (path ? lyricLines.length : true)) {
+      syncLyrics();
+      return;
+    }
+    var token = ++lyricToken;
+    lyricKey = path || "";
+    lyricLines = [];
+    lyricIndex = -2;
+    paintLyrics(-1);
+    if (!path) return;
+    fetch(path).then(function (response) {
+      if (!response.ok) throw new Error("missing");
+      return response.text();
+    }).then(function (text) {
+      if (token !== lyricToken) return;
+      lyricLines = parseLrc(text);
+      lyricIndex = -2;
+      syncLyrics();
+    }).catch(function () {
+      if (token !== lyricToken) return;
+      lyricLines = [];
+      paintLyrics(-1);
+    });
   }
 
   function appendGroup(title, rows, preview) {
@@ -1270,6 +1439,12 @@
     nudge(event);
     setListOpen(!listOpen);
   });
+  lyricsBtn.addEventListener("click", function (event) {
+    nudge(event);
+    lyricsOn = !lyricsOn;
+    saveLyricsPref();
+    paintLyricsToggle();
+  });
   trackPanel.addEventListener("click", function (event) {
     if (event.target === trackPanel) setListOpen(false);
   });
@@ -1324,6 +1499,7 @@
   });
   window.addEventListener("pointermove", revealControls);
   window.addEventListener("pointerdown", revealControls);
+  audioEl.addEventListener("seeked", syncLyrics);
   audioEl.addEventListener("ended", function () {
     if (!playlist.length) return;
     cue(trackIndex + 1);
@@ -1352,6 +1528,7 @@
   }
   resize();
   readVolume();
+  readLyricsPref();
   revealControls();
   setPlayVisible(false);
   raf = requestAnimationFrame(frame);
@@ -1373,7 +1550,8 @@
             src: href,
             preview: !!preview,
             art: localAsset(item.art),
-            cover: localAsset(item.cover)
+            cover: localAsset(item.cover),
+            lyrics: localLyrics(item.lyrics)
           });
           if (item.art) rememberArt(localAsset(item.art));
           if (item.cover) rememberArt(localAsset(item.cover));

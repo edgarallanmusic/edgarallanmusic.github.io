@@ -162,6 +162,50 @@
       text-transform: uppercase;
     }
     .now.is-preview .now-kind { display: block; }
+    .lyrics {
+      position: fixed;
+      z-index: 3;
+      left: 50%;
+      bottom: calc(var(--bar-stack, 5.2rem) + 4.5rem);
+      transform: translateX(-50%);
+      width: min(38rem, calc(100% - 1.5rem - env(safe-area-inset-left) - env(safe-area-inset-right)));
+      margin: 0;
+      text-align: center;
+      pointer-events: none;
+      padding: 0.7rem 1.1rem 0.85rem;
+      background: radial-gradient(ellipse at center, rgba(11, 10, 9, 0.78) 0%, rgba(11, 10, 9, 0.55) 58%, rgba(11, 10, 9, 0) 80%);
+    }
+    .lyrics[hidden] { display: none; }
+    .lyric-line {
+      margin: 0.12rem 0;
+      color: rgba(232, 220, 192, 0.45);
+      font-family: "Cormorant Garamond", Palatino, Georgia, serif;
+      font-size: clamp(1rem, 2.4vw, 1.2rem);
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      text-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.95),
+        0 0 16px rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+    }
+    .lyric-line:empty { display: none; }
+    .lyric-line.is-current {
+      color: #fff6e4;
+      font-size: clamp(1.25rem, 3.2vw, 1.7rem);
+    }
+    .lyric-line em {
+      font-style: italic;
+      font-size: 0.84em;
+      color: #e0a24a;
+    }
+    .lyric-line.is-current.is-rise {
+      animation: lyric-rise 0.4s ease;
+    }
+    @keyframes lyric-rise {
+      from { opacity: 0.15; transform: translateY(0.4rem); }
+      to { opacity: 1; transform: none; }
+    }
+    .controls button.is-lyrics-off { color: rgba(232, 220, 192, 0.45); }
     .tracklist {
       position: fixed;
       inset: 0;
@@ -254,14 +298,19 @@
       .controls input[type="range"] { width: 4.75rem; }
     }
     @media (min-width: 800px) {
+      .lyrics { bottom: calc(var(--bar-stack, 5.2rem) + 7rem); }
       .tracklist { align-items: center; padding: 1.5rem; }
       .tracklist-sheet {
         border-bottom: 1px solid rgba(224, 162, 74, 0.42);
         border-radius: 1rem;
       }
     }
+    @media (max-width: 700px) {
+      .lyrics { bottom: calc(var(--bar-stack, 5.2rem) + 5.4rem); }
+    }
     @media (prefers-reduced-motion: reduce) {
       .controls { transition: none; }
+      .lyric-line.is-current.is-rise { animation: none; }
     }
   </style>
   <link rel="stylesheet" href="../css/cursor.css">
@@ -275,6 +324,11 @@
     <span id="now-album" class="now-album"></span>
     <span id="now-title" class="now-title"></span>
   </p>
+  <div id="lyrics" class="lyrics" hidden aria-live="polite">
+    <p class="lyric-line is-prev"></p>
+    <p class="lyric-line is-current"></p>
+    <p class="lyric-line is-next"></p>
+  </div>
   <audio id="track" preload="none"></audio>
   <div id="controls" class="controls">
     <button type="button" id="prev" hidden disabled aria-label="Previous track">Prev</button>
@@ -296,6 +350,7 @@
       </button>
       <input id="volume" type="range" min="0" max="1" step="0.01" value="1" aria-label="Volume">
     </div>
+    <button type="button" id="lyrics-toggle" hidden disabled aria-pressed="true">Lyrics</button>
     <button type="button" id="full" aria-pressed="false">Fullscreen</button>
   </div>
   <div id="tracklist" class="tracklist" hidden>
