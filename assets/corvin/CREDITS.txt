@@ -1,5 +1,0 @@
-Corvin
-
-The perched, front, cawing, and wings-spread pictures were cut from the artist's reference plates for this site.
-
-The caw is not a recording. js/corvin.js synthesizes it with the Web Audio API: a short falling tone and a little noise, played only after a click, at a low volume. Nothing in that sound comes from another work, so no license is owed.
