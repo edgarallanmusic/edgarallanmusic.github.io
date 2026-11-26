@@ -1,10 +1,10 @@
 {
-  "_note": "This file drives the discography and the podcast block. Copy a release object to add a record. Spotify links must be real https://open.spotify.com URLs you have opened and confirmed. Never invent an ID. Listening buttons and players on the site are generated from this file alone.",
+  "_note": "This file drives the discography and the podcast block. Copy a release object to add a record. Spotify links must be real https://open.spotify.com URLs you have opened and confirmed. Never invent an ID. Listening buttons and players on the site are generated from this file alone. When a release date is confirmed, released is YYYY-MM-DD and the shelf sorts newest first. A missing released means the day is not confirmed.",
   "featured": {
-    "releaseId": "1984s-text",
-    "spotifyId": "1984s-rectified",
+    "releaseId": "ecceh-revalued",
+    "spotifyId": "ecceh-revalued",
     "kicker": "Latest on the stand",
-    "text": "A darkwave reading of Nineteen Eighty-Four. This later edition is the one standing at the front of the shelf."
+    "text": "Nietzsche’s Ecce Homo, and how one becomes what one is. Five tracks, from Becoming the flame to Dynamite, in heavy fuzz and industrial fire."
   },
   "podcast": {
     "title": "Music.txt",
@@ -28,162 +28,14 @@
   },
   "releases": [
     {
-      "id": "1984s-text",
-      "title": "1984s.text",
-      "format": "ep",
-      "year": 2026,
-      "work": "Nineteen Eighty-Four",
-      "author": "George Orwell",
-      "genre": "Darkwave",
-      "summary": "A city of glass, and a face that does not sleep. Cold keys for a book in which the screen looks back.",
-      "spotify": [
-        {
-          "id": "1984s",
-          "title": "1984s.text",
-          "url": "https://open.spotify.com/album/4fjPRK91z07Tgdn21g8zTP",
-          "role": "primary"
-        },
-        {
-          "id": "1984s-rectified",
-          "title": "1984s.text (Rectified)",
-          "url": "https://open.spotify.com/album/029eCFiiDmRSB1z1lXbNG7",
-          "role": "edition",
-          "note": "Later edition"
-        }
-      ]
-    },
-    {
-      "id": "siddhartha-reawakened",
-      "title": "Sidd-hartha.text (Reawakened)",
-      "format": "ep",
-      "year": 2026,
-      "work": "Siddhartha",
-      "author": "Hermann Hesse",
-      "genre": "90s boom-bap",
-      "summary": "From temple to river to unity. A 90s boom-bap telling of Hesse’s seeker, walking until the self goes quiet.",
-      "spotify": [
-        {
-          "id": "siddhartha-reawakened",
-          "title": "Sidd-hartha.text (Reawakened)",
-          "url": "https://open.spotify.com/album/7npYMrlsctHpUxXd8994Y9",
-          "role": "primary"
-        },
-        {
-          "id": "siddhartha-earlier",
-          "title": "Sidd-hartha.text",
-          "url": "https://open.spotify.com/album/7KOBO8L16oUEH2T84Zp0kN",
-          "role": "edition",
-          "note": "Earlier pressing"
-        }
-      ]
-    },
-    {
-      "id": "purgatorio",
-      "title": "PurgatorioDD.text",
-      "format": "ep",
-      "year": 2026,
-      "work": "The Divine Comedy",
-      "author": "Dante Alighieri",
-      "genre": "Symphonic metal",
-      "summary": "The mountain after the pit. Choir and iron for the climb, each ledge a weight learning how to rise.",
-      "spotify": [
-        {
-          "id": "purgatorio",
-          "title": "PurgatorioDD.text",
-          "url": "https://open.spotify.com/album/7nvzWN7bdbYSkR7sHbM9XS",
-          "role": "primary"
-        }
-      ]
-    },
-    {
-      "id": "the-double",
-      "title": "The doubleFD.text",
-      "format": "ep",
-      "year": 2026,
-      "work": "The Double",
-      "author": "Fyodor Dostoevsky",
-      "genre": "Nu-metal",
-      "summary": "A man meets the other man who wears his face. Nu-metal for the laugh in the doorway that is his, and is not.",
-      "spotify": [
-        {
-          "id": "the-double",
-          "title": "The doubleFD.text",
-          "url": "https://open.spotify.com/album/3Z0ndsM9ZmYYWl7pSj4hp5",
-          "role": "primary"
-        }
-      ]
-    },
-    {
-      "id": "nat-pan",
-      "title": "Nat-Pan",
-      "format": "ep",
-      "year": 2026,
-      "work": "Zaphnath-Paaneah",
-      "author": "The story of Joseph",
-      "genre": null,
-      "summary": "Joseph before Pharaoh. The dreams no one in the court could read, and the name a king gives the interpreter.",
-      "spotify": [
-        {
-          "id": "nat-pan",
-          "title": "Nat-Pan",
-          "url": "https://open.spotify.com/album/3L38HmOZ0jTGuB1CmDGj9Q",
-          "role": "primary"
-        }
-      ]
-    },
-    {
-      "id": "sg-text",
-      "title": "Sg.text",
-      "format": "ep",
-      "year": 2026,
-      "work": null,
-      "author": "Sigmund Freud",
-      "genre": null,
-      "summary": "The couch, the dream, the slip of the tongue. A record leaned over the voice that says one thing and means another.",
-      "spotify": [
-        {
-          "id": "sg-text",
-          "title": "Sg.text",
-          "url": "https://open.spotify.com/album/1B9Ev8zEMn7E9HvGPG7Ndx",
-          "role": "primary"
-        }
-      ]
-    },
-    {
-      "id": "you-kant",
-      "title": "You Kan't",
-      "format": "ep",
-      "year": 2026,
-      "work": null,
-      "author": "Ivan Pavlov and B. F. Skinner",
-      "genre": null,
-      "summary": "Bells, rewards, the trained flinch. A study of conditioning: what the hand does before the mind has agreed.",
-      "spotify": [
-        {
-          "id": "you-kant",
-          "title": "You Kan't",
-          "url": "https://open.spotify.com/album/3CIyUVCPng3AyTRZxdBpFQ",
-          "role": "primary"
-        },
-        {
-          "id": "you-kant-reconditioned",
-          "title": "You Kan't (Reconditioned)",
-          "url": "https://open.spotify.com/album/70FNNopr5XB6RU6k9WxnXH",
-          "role": "edition",
-          "note": "Later edition"
-        }
-      ]
-    },
-    {
       "id": "ecceh-revalued",
       "title": "EcceH.text (Revalued)",
       "format": "ep",
-      "status": "upcoming",
-      "year": null,
+      "year": 2026,
       "work": "Ecce Homo",
       "author": "Friedrich Nietzsche",
       "genre": null,
-      "summary": "A remaster of the EcceH.text EP, drawn from Nietzsche’s Ecce Homo. The full record is still ahead.",
+      "summary": "Nietzsche’s Ecce Homo, and how one becomes what one is. Five tracks, from Becoming the flame to Dynamite, in heavy fuzz and industrial fire.",
       "cover": "visualizer/assets/ecceh/cover-1200.jpg",
       "previews": [
         {
@@ -212,22 +64,172 @@
           "side": "B"
         }
       ],
-      "spotify": []
-    },
-    {
-      "id": "ecceh",
-      "title": "EcceH.text",
-      "format": "ep",
-      "year": 2026,
-      "work": "Ecce Homo",
-      "author": "Friedrich Nietzsche",
-      "genre": null,
-      "summary": "Behold the man. Nietzsche writing his own legend, set down here in his own hard light.",
       "spotify": [
+        {
+          "id": "ecceh-revalued",
+          "title": "EcceH.text (Revalued)",
+          "url": "https://open.spotify.com/album/1uGvFV6zoifBuGova4xbIe",
+          "role": "primary"
+        },
         {
           "id": "ecceh",
           "title": "EcceH.text",
           "url": "https://open.spotify.com/album/7wPqnaZVWMpuMXlHJjgJo3",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ],
+      "released": "2026-11-25"
+    },
+    {
+      "id": "1984s-text",
+      "title": "1984s.text (Rectified)",
+      "format": "ep",
+      "year": 2026,
+      "work": "Nineteen Eighty-Four",
+      "author": "George Orwell",
+      "genre": "Darkwave",
+      "summary": "A city of glass, and a face that does not sleep. Cold keys for a book in which the screen looks back.",
+      "spotify": [
+        {
+          "id": "1984s-rectified",
+          "title": "1984s.text (Rectified)",
+          "url": "https://open.spotify.com/album/029eCFiiDmRSB1z1lXbNG7",
+          "role": "primary"
+        },
+        {
+          "id": "1984s",
+          "title": "1984s.text",
+          "url": "https://open.spotify.com/album/4fjPRK91z07Tgdn21g8zTP",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ],
+      "released": "2026-11-12"
+    },
+    {
+      "id": "siddhartha-reawakened",
+      "title": "Sidd-hartha.text (Reawakened)",
+      "format": "ep",
+      "year": 2026,
+      "work": "Siddhartha",
+      "author": "Hermann Hesse",
+      "genre": "90s boom-bap",
+      "summary": "From temple to river to unity. A 90s boom-bap telling of Hesse’s seeker, walking until the self goes quiet.",
+      "spotify": [
+        {
+          "id": "siddhartha-reawakened",
+          "title": "Sidd-hartha.text (Reawakened)",
+          "url": "https://open.spotify.com/album/7npYMrlsctHpUxXd8994Y9",
+          "role": "primary"
+        },
+        {
+          "id": "siddhartha-earlier",
+          "title": "Sidd-hartha.text",
+          "url": "https://open.spotify.com/album/7KOBO8L16oUEH2T84Zp0kN",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ],
+      "released": "2026-11-08"
+    },
+    {
+      "id": "you-kant",
+      "title": "You Kan't (Reconditioned)",
+      "format": "ep",
+      "year": 2026,
+      "work": null,
+      "author": "Ivan Pavlov and B. F. Skinner",
+      "genre": null,
+      "summary": "Bells, rewards, the trained flinch. A study of conditioning: what the hand does before the mind has agreed.",
+      "spotify": [
+        {
+          "id": "you-kant-reconditioned",
+          "title": "You Kan't (Reconditioned)",
+          "url": "https://open.spotify.com/album/70FNNopr5XB6RU6k9WxnXH",
+          "role": "primary"
+        },
+        {
+          "id": "you-kant",
+          "title": "You Kan't",
+          "url": "https://open.spotify.com/album/3CIyUVCPng3AyTRZxdBpFQ",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ],
+      "released": "2026-11-04"
+    },
+    {
+      "id": "the-double",
+      "title": "The doubleFD.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "The Double",
+      "author": "Fyodor Dostoevsky",
+      "genre": "Nu-metal",
+      "summary": "A man meets the other man who wears his face. Nu-metal for the laugh in the doorway that is his, and is not.",
+      "spotify": [
+        {
+          "id": "the-double",
+          "title": "The doubleFD.text",
+          "url": "https://open.spotify.com/album/3Z0ndsM9ZmYYWl7pSj4hp5",
+          "role": "primary"
+        }
+      ],
+      "released": "2026-04-24"
+    },
+    {
+      "id": "purgatorio",
+      "title": "PurgatorioDD.text",
+      "format": "ep",
+      "year": 2026,
+      "work": "The Divine Comedy",
+      "author": "Dante Alighieri",
+      "genre": "Symphonic metal",
+      "summary": "The mountain after the pit. Choir and iron for the climb, each ledge a weight learning how to rise.",
+      "spotify": [
+        {
+          "id": "purgatorio",
+          "title": "PurgatorioDD.text",
+          "url": "https://open.spotify.com/album/7nvzWN7bdbYSkR7sHbM9XS",
+          "role": "primary"
+        }
+      ],
+      "released": "2026-04-18"
+    },
+    {
+      "id": "nat-pan",
+      "title": "Nat-Pan",
+      "format": "ep",
+      "year": 2026,
+      "work": "Zaphnath-Paaneah",
+      "author": "The story of Joseph",
+      "genre": null,
+      "summary": "Joseph before Pharaoh. The dreams no one in the court could read, and the name a king gives the interpreter.",
+      "spotify": [
+        {
+          "id": "nat-pan",
+          "title": "Nat-Pan",
+          "url": "https://open.spotify.com/album/3L38HmOZ0jTGuB1CmDGj9Q",
+          "role": "primary"
+        }
+      ],
+      "released": "2026-03-13"
+    },
+    {
+      "id": "sg-text",
+      "title": "Sg.text",
+      "format": "ep",
+      "year": 2026,
+      "work": null,
+      "author": "Sigmund Freud",
+      "genre": null,
+      "summary": "The couch, the dream, the slip of the tongue. A record leaned over the voice that says one thing and means another.",
+      "spotify": [
+        {
+          "id": "sg-text",
+          "title": "Sg.text",
+          "url": "https://open.spotify.com/album/1B9Ev8zEMn7E9HvGPG7Ndx",
           "role": "primary"
         }
       ]

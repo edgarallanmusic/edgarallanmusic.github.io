@@ -1373,12 +1373,27 @@
       }
       found.items.push({ item: item, index: index });
     });
-    groups.forEach(function (group) {
-      appendGroup(group.album, group.items, false);
+    var shelf = groups.map(function (group) {
+      return { album: group.album, items: group.items, preview: false };
     });
     if (previews.length) {
-      appendGroup(previews[0].item.album || "Previews", previews, true);
+      shelf.push({
+        album: previews[0].item.album || "Previews",
+        items: previews,
+        preview: true
+      });
     }
+    shelf.sort(function (a, b) {
+      var da = (a.items[0] && a.items[0].item.released) || "";
+      var db = (b.items[0] && b.items[0].item.released) || "";
+      if (da && db && da !== db) return da < db ? 1 : -1;
+      if (da && !db) return -1;
+      if (!da && db) return 1;
+      return 0;
+    });
+    shelf.forEach(function (group) {
+      appendGroup(group.album, group.items, group.preview);
+    });
     highlightCurrent();
   }
 
@@ -1551,7 +1566,8 @@
             preview: !!preview,
             art: localAsset(item.art),
             cover: localAsset(item.cover),
-            lyrics: localLyrics(item.lyrics)
+            lyrics: localLyrics(item.lyrics),
+            released: (/^\d{4}-\d{2}-\d{2}$/.test(item.released || "")) ? item.released : ""
           });
           if (item.art) rememberArt(localAsset(item.art));
           if (item.cover) rememberArt(localAsset(item.cover));
@@ -1561,6 +1577,14 @@
       else if (data && typeof data === "object") {
         pushItems(data.tracks, false);
         pushItems(data.previews, true);
+        playlist.sort(function (a, b) {
+          var da = a.released || "";
+          var db = b.released || "";
+          if (da && db && da !== db) return da < db ? 1 : -1;
+          if (da && !db) return -1;
+          if (!da && db) return 1;
+          return 0;
+        });
       }
       if (!playlist.length) {
         setPlayVisible(false);

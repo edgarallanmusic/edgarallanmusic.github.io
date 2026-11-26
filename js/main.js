@@ -94,6 +94,7 @@
         if (group.id === "other") return !known[release.format];
         return release.format === group.id;
       });
+      items.sort(newestFirst);
       if (!items.length) return;
       catalogRoot.appendChild(el("p", { class: "group-label", text: group.label }));
       var list = el("ul", { class: "cards" });
@@ -112,7 +113,7 @@
         ? el("span", { class: "coming", text: "Coming soon" })
         : (release.year ? el("span", { class: "year", text: String(release.year) }) : null)
     ]);
-    var cover = upcoming ? localImage(release.cover) : null;
+    var cover = localImage(release.cover);
     var body = [
       cover ? el("img", {
         class: "release-cover",
@@ -277,6 +278,15 @@
     if (src.indexOf("..") !== -1 || src.indexOf("://") !== -1 || src.charAt(0) === "/") return null;
     if (!/\.(jpe?g|png|webp)$/i.test(src)) return null;
     return src;
+  }
+
+  function newestFirst(a, b) {
+    var da = (a && typeof a.released === "string") ? a.released : "";
+    var db = (b && typeof b.released === "string") ? b.released : "";
+    if (da && db && da !== db) return da < db ? 1 : -1;
+    if (da && !db) return -1;
+    if (!da && db) return 1;
+    return 0;
   }
 
   function renderPodcast(data) {
