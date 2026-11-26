@@ -82,6 +82,32 @@
       "released": "2026-11-25"
     },
     {
+      "id": "1984s-text",
+      "title": "1984s.text (Rectified)",
+      "format": "ep",
+      "year": 2026,
+      "work": "Nineteen Eighty-Four",
+      "author": "George Orwell",
+      "genre": "Darkwave",
+      "summary": "A city of glass, and a face that does not sleep. Cold keys for a book in which the screen looks back.",
+      "spotify": [
+        {
+          "id": "1984s-rectified",
+          "title": "1984s.text (Rectified)",
+          "url": "https://open.spotify.com/album/029eCFiiDmRSB1z1lXbNG7",
+          "role": "primary"
+        },
+        {
+          "id": "1984s",
+          "title": "1984s.text",
+          "url": "https://open.spotify.com/album/4fjPRK91z07Tgdn21g8zTP",
+          "role": "edition",
+          "note": "Earlier pressing"
+        }
+      ],
+      "released": "2026-11-12"
+    },
+    {
       "id": "siddhartha-reawakened",
       "title": "Sidd-hartha.text (Reawakened)",
       "format": "ep",
@@ -132,32 +158,6 @@
         }
       ],
       "released": "2026-11-04"
-    },
-    {
-      "id": "1984s-text",
-      "title": "1984s.text",
-      "format": "ep",
-      "year": 2026,
-      "work": "Nineteen Eighty-Four",
-      "author": "George Orwell",
-      "genre": "Darkwave",
-      "summary": "A city of glass, and a face that does not sleep. Cold keys for a book in which the screen looks back.",
-      "spotify": [
-        {
-          "id": "1984s",
-          "title": "1984s.text",
-          "url": "https://open.spotify.com/album/4fjPRK91z07Tgdn21g8zTP",
-          "role": "primary"
-        },
-        {
-          "id": "1984s-rectified",
-          "title": "1984s.text (Rectified)",
-          "url": "https://open.spotify.com/album/029eCFiiDmRSB1z1lXbNG7",
-          "role": "edition",
-          "note": "Later edition"
-        }
-      ],
-      "released": "2026-04-26"
     },
     {
       "id": "the-double",
