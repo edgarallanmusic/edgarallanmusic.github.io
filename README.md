@@ -66,7 +66,7 @@ Display type is Cormorant Garamond. Body type is Source Serif 4. Both are under 
 
 The public visualizer is [visualizer/](visualizer/). It is the Portada picture: the raven and the candle. The bar is Previous, Play/Pause, Next, volume, and Fullscreen. There is no palette picker and no recorder.
 
-`tracks` holds the full songs from **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**. `previews` holds the short **EcceH.text (Revalued)** fragments. The shelf lists albums newest first. While a track plays, the album name and the song title sit in the corner. Nothing is fetched until Play. The list button (or the L key) opens the shelf. Esc or a click outside closes it.
+`tracks` holds the full songs from **EcceH.text (Revalued)**, **1984s.text (Rectified)**, **Sidd-hartha.text (Reawakened)**, and **You Kan't (Reconditioned)**. `previews` is empty. The shelf lists albums newest first. While a track plays, the album name and the song title sit in the corner. Nothing is fetched until Play. The list button (or the L key) opens the shelf. Esc or a click outside closes it.
 
 The walk between the home page and the visualizer is a short amber iris. Browsers without cross-document view transitions get the same passage from `js/transition.js`. Reduced motion uses a brief fade.
 

@@ -1,6 +1,46 @@
 {
-  "_note": "tracks play newest album first, then the next. Each item is {album, title, src}. src is relative to visualizer/. Optional released is YYYY-MM-DD when the day is confirmed. EcceH.text (Revalued) previews use side-a-16x9.jpg for Side A and side-b-16x9.jpg for Side B; the list header uses the cover. Optional lyrics is a path relative to visualizer/, matching the audio name.",
+  "_note": "tracks play newest album first, then the next. Each item is {album, title, src}. src is relative to visualizer/. Optional released is YYYY-MM-DD when the day is confirmed. EcceH.text (Revalued) uses side-a-16x9.jpg for Side A (tracks 1-3) and side-b-16x9.jpg for Side B (tracks 4-5) while a track plays. Optional lyrics is a path relative to visualizer/, matching the audio name.",
   "tracks": [
+    {
+      "album": "EcceH.text (Revalued)",
+      "title": "Becoming the Flame",
+      "src": "audio/ecceh-revalued/01-becoming-the-flame.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg",
+      "released": "2026-11-25"
+    },
+    {
+      "album": "EcceH.text (Revalued)",
+      "title": "Solitude as Weapon",
+      "src": "audio/ecceh-revalued/02-solitude-as-weapon.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg",
+      "released": "2026-11-25"
+    },
+    {
+      "album": "EcceH.text (Revalued)",
+      "title": "The Clean Knife of Truth",
+      "src": "audio/ecceh-revalued/03-the-clean-knife-of-truth.mp3",
+      "art": "assets/ecceh/side-a-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg",
+      "released": "2026-11-25"
+    },
+    {
+      "album": "EcceH.text (Revalued)",
+      "title": "Amor Fati",
+      "src": "audio/ecceh-revalued/04-amor-fati.mp3",
+      "art": "assets/ecceh/side-b-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg",
+      "released": "2026-11-25"
+    },
+    {
+      "album": "EcceH.text (Revalued)",
+      "title": "Dynamite",
+      "src": "audio/ecceh-revalued/05-dynamite.mp3",
+      "art": "assets/ecceh/side-b-16x9.jpg",
+      "cover": "assets/ecceh/cover-1200.jpg",
+      "released": "2026-11-25"
+    },
     {
       "album": "1984s.text (Rectified)",
       "title": "The face that never sleeps - Rectified",
@@ -102,46 +142,5 @@
       "released": "2026-11-04"
     }
   ],
-  "previews": [
-    {
-      "album": "EcceH.text (Revalued)",
-      "title": "Becoming the Flame",
-      "src": "audio/ecceh-revalued/01-becoming-the-flame-preview.mp3",
-      "art": "assets/ecceh/side-a-16x9.jpg",
-      "cover": "assets/ecceh/cover-1200.jpg",
-      "released": "2026-11-25"
-    },
-    {
-      "album": "EcceH.text (Revalued)",
-      "title": "Solitude as Weapon",
-      "src": "audio/ecceh-revalued/02-solitude-as-weapon-preview.mp3",
-      "art": "assets/ecceh/side-a-16x9.jpg",
-      "cover": "assets/ecceh/cover-1200.jpg",
-      "released": "2026-11-25"
-    },
-    {
-      "album": "EcceH.text (Revalued)",
-      "title": "The Clean Knife of Truth",
-      "src": "audio/ecceh-revalued/03-the-clean-knife-of-truth-preview.mp3",
-      "art": "assets/ecceh/side-a-16x9.jpg",
-      "cover": "assets/ecceh/cover-1200.jpg",
-      "released": "2026-11-25"
-    },
-    {
-      "album": "EcceH.text (Revalued)",
-      "title": "Amor Fati",
-      "src": "audio/ecceh-revalued/04-amor-fati-preview.mp3",
-      "art": "assets/ecceh/side-b-16x9.jpg",
-      "cover": "assets/ecceh/cover-1200.jpg",
-      "released": "2026-11-25"
-    },
-    {
-      "album": "EcceH.text (Revalued)",
-      "title": "Dynamite",
-      "src": "audio/ecceh-revalued/05-dynamite-preview.mp3",
-      "art": "assets/ecceh/side-b-16x9.jpg",
-      "cover": "assets/ecceh/cover-1200.jpg",
-      "released": "2026-11-25"
-    }
-  ]
+  "previews": []
 }

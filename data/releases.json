@@ -37,33 +37,6 @@
       "genre": null,
       "summary": "Nietzsche’s Ecce Homo, and how one becomes what one is. Five tracks, from Becoming the flame to Dynamite, in heavy fuzz and industrial fire.",
       "cover": "visualizer/assets/ecceh/cover-1200.jpg",
-      "previews": [
-        {
-          "title": "Becoming the Flame",
-          "src": "visualizer/audio/ecceh-revalued/01-becoming-the-flame-preview.mp3",
-          "side": "A"
-        },
-        {
-          "title": "Solitude as Weapon",
-          "src": "visualizer/audio/ecceh-revalued/02-solitude-as-weapon-preview.mp3",
-          "side": "A"
-        },
-        {
-          "title": "The Clean Knife of Truth",
-          "src": "visualizer/audio/ecceh-revalued/03-the-clean-knife-of-truth-preview.mp3",
-          "side": "A"
-        },
-        {
-          "title": "Amor Fati",
-          "src": "visualizer/audio/ecceh-revalued/04-amor-fati-preview.mp3",
-          "side": "B"
-        },
-        {
-          "title": "Dynamite",
-          "src": "visualizer/audio/ecceh-revalued/05-dynamite-preview.mp3",
-          "side": "B"
-        }
-      ],
       "spotify": [
         {
           "id": "ecceh-revalued",
