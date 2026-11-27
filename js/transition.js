@@ -1,9 +1,8 @@
-/* Fallback for browsers that do not run cross-document view transitions.
-   Only the walk between the house and the visualizer is held. Back and
-   forward are left to the browser. */
+/* Passage between the house and the visualizer.
+   Browsers that run cross-document view transitions keep the amber iris
+   on the way home. The walk into the visualizer is the raven's eye,
+   finished on the visualizer page so playback there is not held. */
 (function () {
-  if (typeof document.startViewTransition === "function") return;
-
   var reduce = false;
   try {
     reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -17,6 +16,18 @@
     return "";
   }
 
+  window.addEventListener("pageswap", function (event) {
+    if (!event.viewTransition) return;
+    var dest = "";
+    try {
+      dest = (event.activation && event.activation.entry && event.activation.entry.url) || "";
+    } catch (e) {}
+    if (dest.indexOf("/visualizer") === -1) return;
+    if (typeof event.viewTransition.skipTransition === "function") {
+      event.viewTransition.skipTransition();
+    }
+  });
+
   document.addEventListener("click", function (event) {
     if (event.defaultPrevented || event.button !== 0) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
@@ -28,7 +39,15 @@
     if (dest.origin !== window.location.origin) return;
     var from = kind(window.location.href);
     var to = kind(dest.href);
-    var pair = (from === "home" && to === "viz") || (from === "viz" && to === "home");
+    if (to === "viz" && from !== "viz") {
+      event.preventDefault();
+      try { sessionStorage.setItem("eam-viz-eye", "1"); }
+      catch (e) {}
+      window.location.href = dest.href;
+      return;
+    }
+    if (typeof document.startViewTransition === "function") return;
+    var pair = (from === "viz" && to === "home");
     if (!pair) return;
     event.preventDefault();
     var veil = document.createElement("div");
