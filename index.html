@@ -29,7 +29,30 @@
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preload" as="image" href="assets/hero-960.jpg" imagesrcset="assets/hero-960.jpg 960w, assets/hero-1920.jpg 1920w" imagesizes="100vw">
   <link rel="preload" href="assets/fonts/cormorant-garamond-500.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("eam-intro") === "1") return;
+      } catch (e) {}
+      document.documentElement.classList.add("intro-pending");
+    })();
+  </script>
+  <style>
+    html.intro-pending,
+    html.intro-pending body { overflow: hidden; background: #0E0605; }
+    html.intro-pending:not(.intro-live) #intro { visibility: hidden; }
+    html.intro-pending::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 75;
+      background: #0E0605 url("assets/intro/intro-poster.jpg") center / cover no-repeat;
+    }
+    html.intro-live::before { content: none; }
+    html:not(.intro-pending) #intro { display: none !important; }
+  </style>
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/intro.css">
   <link rel="stylesheet" href="css/cursor.css">
   <link rel="stylesheet" href="css/transition.css">
   <script type="application/ld+json">
@@ -51,6 +74,12 @@
   </script>
 </head>
 <body>
+  <div id="intro" class="intro" role="dialog" aria-modal="true" aria-label="EdgarAllanMusic">
+    <img id="intro-poster" class="intro-media" alt="" width="1280" height="720">
+    <video id="intro-video" class="intro-media" playsinline preload="none" disablepictureinpicture></video>
+    <button type="button" id="intro-enter" class="intro-enter">Enter</button>
+    <button type="button" id="intro-skip" class="intro-skip">Skip</button>
+  </div>
   <a class="skip" href="#content">Skip to content</a>
   <header class="site-header">
     <a class="brand" href="index.html">
@@ -166,6 +195,7 @@
     </nav>
     <p class="colophon">© 2026 EdgarAllanMusic</p>
   </footer>
+  <script src="js/intro.js"></script>
   <script src="js/main.js"></script>
   <script src="js/cursor.js"></script>
   <script src="js/transition.js"></script>

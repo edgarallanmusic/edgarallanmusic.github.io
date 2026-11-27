@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem("eam-viz-eye") !== "1") return;
+      } catch (e) { return; }
+      document.documentElement.classList.add("viz-arrive");
+      var link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = "../assets/intro/intro-last.jpg";
+      document.head.appendChild(link);
+    })();
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Visualizer — EdgarAllanMusic</title>
@@ -317,6 +330,44 @@
   <link rel="stylesheet" href="../css/transition.css">
 </head>
 <body data-cursor-trail="off">
+  <div id="viz-eye" class="viz-eye" aria-hidden="true">
+    <img id="viz-eye-img" alt="" width="1280" height="720">
+  </div>
+  <script>
+    (function () {
+      if (!document.documentElement.classList.contains("viz-arrive")) return;
+      var eye = document.getElementById("viz-eye");
+      var img = document.getElementById("viz-eye-img");
+      if (!eye || !img) return;
+      img.src = "../assets/intro/intro-last.jpg";
+      try { sessionStorage.removeItem("eam-viz-eye"); } catch (e) {}
+      var reduce = false;
+      try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+      catch (err) {}
+      function arm() {
+        var rect = img.getBoundingClientRect();
+        if (rect.width < 2 || rect.height < 2) {
+          window.requestAnimationFrame(arm);
+          return;
+        }
+        var mediaW = 1280;
+        var mediaH = 720;
+        var fit = Math.max(rect.width / mediaW, rect.height / mediaH);
+        var drawnW = mediaW * fit;
+        var drawnH = mediaH * fit;
+        img.style.transformOrigin =
+          ((rect.width - drawnW) / 2 + (683 / mediaW) * drawnW) + "px " +
+          ((rect.height - drawnH) / 2 + (243 / mediaH) * drawnH) + "px";
+        eye.classList.add("is-hot");
+        img.classList.add("is-hot");
+        window.setTimeout(function () {
+          document.documentElement.classList.remove("viz-arrive");
+          if (eye.parentNode) eye.parentNode.removeChild(eye);
+        }, reduce ? 240 : 860);
+      }
+      window.requestAnimationFrame(arm);
+    })();
+  </script>
   <canvas id="c" aria-label="Raven and candle, moving with the music"></canvas>
   <a class="mark" href="../index.html">EdgarAllanMusic</a>
   <p id="now-playing" class="now" hidden>
